@@ -1,0 +1,44 @@
+---
+- name: Déploiement et configuration de la base de données
+  hosts: database_machine
+  become: yes
+
+  tasks:
+    - name: Mise à jour de la liste des paquets
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Installer MariaDB et ses dépendances
+      apt:
+        name:
+          - mariadb-server
+          - python3-pymysql   # Module Python pour se connecter à MariaDB depuis Ansible
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Démarrer le service MariaDB
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Créer une base de données pour WordPress
+      mysql_db:
+        name: "{{ wp_db_name }}"  # Remplacez par le nom de la base de données pour WordPress
+        state: present
+
+    - name: Créer un utilisateur spécifique pour WordPress
+      mysql_user:
+        name: "{{ wp_db_user }}"          # Remplacez par le nom d'utilisateur pour WordPress
+        password: "{{ wp_db_password }}"  # Remplacez par le mot de passe pour WordPress
+        priv: "{{ wp_db_name }}.*:ALL"    # Accorde tous les privilèges sur la base de données WordPress
+        state: present
+      notify:
+        - Restart MariaDB
+
+  handlers:
+    - name: Redémarrer MariaDB
+      service:
+        name: mysql
+        state: restarted

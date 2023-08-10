@@ -1,0 +1,12 @@
+# Wordpress variables : 
+wp_db_name      : "nom_de_la_base_de_donnees"
+wp_db_user      : "utilisateur_de_la_base_de_donnees"
+wp_db_password  : "mot_de_passe_de_la_base_de_donnees"
+wp_db_host      : "localhost"  # Ou l'adresse IP du serveur de la base de données
+wp_debug        : true  # Mettre à false si vous ne voulez pas activer le mode de débogage
+wp_domain       : "monsite.com"  # Remplacez par le nom de domaine de votre site
+wp_title        : "Mon site WordPress"  # Remplacez par le titre de votre site
+
+# Database variables :
+mariadb_root_password : "mot_de_passe_root_mysql"
+

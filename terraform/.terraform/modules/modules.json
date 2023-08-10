@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"db_vm","Source":"./db_vm","Dir":"db_vm"},{"Key":"firewall","Source":"./firewall","Dir":"firewall"},{"Key":"vpc","Source":"./vpc","Dir":"vpc"},{"Key":"wordpress_vm","Source":"./wordpress_vm","Dir":"wordpress_vm"}]}

@@ -1,0 +1,33 @@
+<?php
+/**
+ * Fichier de configuration de WordPress généré par Ansible.
+ */
+
+define( 'DB_NAME', '{{ wp_db_name }}' );
+define( 'DB_USER', '{{ wp_db_user }}' );
+define( 'DB_PASSWORD', '{{ wp_db_password }}' );
+define( 'DB_HOST', '{{ wp_db_host }}' );
+
+// Autres constantes de configuration de WordPress
+define( 'WP_DEBUG', {{ wp_debug | default(false) | lower }} );
+define( 'DB_CHARSET', 'utf8' );
+define( 'DB_COLLATE', '' );
+
+// Clés de sécurité uniques générées par Ansible
+{{ wp_auth_keys | join("\n") }}
+
+// Préfixe des tables de la base de données
+$table_prefix = 'wp_';
+
+// URL de WordPress
+define( 'WP_SITEURL', 'http://{{ wp_domain }}' );
+define( 'WP_HOME', 'http://{{ wp_domain }}' );
+
+// Autres configurations spécifiques à votre installation
+// ...
+
+/* C'est tout, arrêtez de modifier les choses en dessous de cette ligne! */
+if ( ! defined( 'ABSPATH' ) ) {
+    define( 'ABSPATH', dirname( __FILE__ ) . '/' );
+}
+require_once( ABSPATH . 'wp-settings.php' );

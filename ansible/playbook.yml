@@ -1,0 +1,20 @@
+- name: Deploy WordPress
+  hosts: wordpress_machine
+  become: true
+  
+  vars_files:
+    - vars.yml
+
+  roles:
+    - wordpress
+
+- name: Deploy Database
+  hosts: database_machine
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  roles:
+    - database
+
