@@ -1,4 +1,4 @@
-# Inventory
+# Inventory des machines cibles
 
 [all]
 wordpress_machine ansible_host=
