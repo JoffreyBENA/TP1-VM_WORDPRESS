@@ -1,0 +1,5 @@
+# Inventory
+
+[all]
+wordpress_machine ansible_host=
+database_machine ansible_host=
