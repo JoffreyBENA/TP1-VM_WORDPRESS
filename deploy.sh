@@ -94,7 +94,7 @@ ssh-copy-id -i "$HOME/.ssh/id_rsa_db.pub" "root@$db_vm_private_ip"
 
 # Déploiement avec Ansible
 echo "Déploiement avec Ansible..."
-ansible-playbook -i inventory/hosts playbook.yml
+ansible-playbook playbook.yml -i inventory/hosts
 
 # Vérification de l'application
 echo "Vérification de l'application..."
