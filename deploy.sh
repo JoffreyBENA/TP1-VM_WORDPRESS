@@ -62,9 +62,9 @@ hosts_file="./inventory/hosts"
 
 # Création du fichier hosts pour Ansible
 echo "Création du fichier hosts pour Ansible..."
-echo "[all]" > "$hosts_file"
-echo "wordpress_machine ansible_host=${wordpress_vm_public_ip}" >> "$hosts_file"
-echo "database_machine ansible_host=${db_vm_private_ip}" >> "$hosts_file"
+echo "[all]" > $hosts_file
+echo "wordpress_machine ansible_host=${wordpress_vm_public_ip}" >> $hosts_file
+echo "database_machine ansible_host=${db_vm_private_ip}" >> $hosts_file
 
 echo "Le fichier d'inventaire Ansible a été créé : $hosts_file"
 
