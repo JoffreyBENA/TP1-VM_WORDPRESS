@@ -26,3 +26,18 @@ variable "firewall_source" {
     description = "IP source pour le firewall"
     default     = ["0.0.0.0/0"]
 }
+
+variable "account_id" {
+    description = "ID du compte de service."
+    default     = "pure-anthem-393513"
+}
+
+variable "display_name" {
+    description = "Nom du compte de service."
+    default     = "Compute Engine default service account"
+}
+
+variable "key_filename" {
+    description = "Comment déployer la clé et comment la nommer."
+    default     = "./credentials.json"
+}

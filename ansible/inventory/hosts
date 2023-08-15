@@ -1,7 +1,0 @@
-# Inventory des machines cibles
-
-[wordpress_machine] 
-wordpress_machine ansible_host=
-
-[database_machine]
-database_machine ansible_host=

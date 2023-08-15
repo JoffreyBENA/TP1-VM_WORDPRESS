@@ -1,20 +1,21 @@
 ---
 - name: Déploiement et configuration de WordPress
-  hosts: wordpress_machine
-  become: yes
+  hosts: wordpress-vm   
+  gather_facts: false
+  become: true
 
   tasks:
     - name: Mise à jour de la liste des paquets
       apt:
         update_cache: yes
-      when: ansible_os_family == 'Debian'
+      become: true
 
     - name: Installer les paquets requis pour Apache (ou Nginx) et PHP
       apt:
         name: 
-          - apache2    # ou nginx
+          - apache2               # ou nginx
           - php
-          - libapache2-mod-php   # ou php-fpm pour Nginx
+          - libapache2-mod-php    # ou php-fpm pour Nginx
           - php-mysql
           - php-mysqli
           - php-curl
@@ -22,7 +23,9 @@
           - php-mbstring
           - php-xml
           - php-xmlrpc
-      when: ansible_os_family == 'Debian'
+          - mariadb_client
+        state: present
+      become: true
 
     - name: Activer Apache (ou Nginx) et PHP
       service:
@@ -42,15 +45,6 @@
         src: /tmp/wordpress-latest.tar.gz
         dest: /var/www/html
         remote_src: yes
-        owner: www-data
-        group: www-data
-
-    - name: Copier le fichier de configuration wp-config.php
-      template:
-        src: wp-config.php.j2
-        dest: /var/www/html/wordpress/wp-config.php
-        owner: www-data
-        group: www-data
 
     - name: Définir les permissions pour WordPress
       file:

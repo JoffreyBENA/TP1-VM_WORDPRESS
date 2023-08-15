@@ -10,5 +10,5 @@ output "wordpress_vm_self_link" {
 
 output "wordpress_vm_public_ip" {
     description = "Adresse IP publique de la machine virtuelle WordPress."
-    value = google_compute_instance.wordpress_vm.network_interface[0].access_config[0].nat_ip
+    value       = google_compute_instance.wordpress_vm.network_interface[0].access_config[0].nat_ip
 }

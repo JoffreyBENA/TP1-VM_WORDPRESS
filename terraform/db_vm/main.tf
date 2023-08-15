@@ -2,6 +2,12 @@ resource "google_compute_instance" "db_vm" {
     name         = var.db_vm
     machine_type = var.type
     zone         = var.zone
+    tags         = ["db-vm","ansible"]
+
+    service_account {
+        email  = var.service_account_email
+        scopes = ["cloud-platform"]
+    }
 
     boot_disk {
         initialize_params {
@@ -12,13 +18,7 @@ resource "google_compute_instance" "db_vm" {
     network_interface {
         network     = var.network_self_link
         subnetwork  = var.subnet_self_link
-    access_config {}
+    access_config {
+        }
     }
-
-    metadata_startup_script = <<SCRIPT
-            #!/bin/bash
-        apt-get update
-        apt-get install -y ansible
-        ansible-playbook ansible/roles/database/main.yml
-    SCRIPT
-    }
+}
