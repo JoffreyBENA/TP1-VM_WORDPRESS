@@ -52,60 +52,68 @@ cd ..
 
 # --------------------------------------------------------------------
 
-# Création des clés SSH
-
-export USER=joffreym2igcp
-
-# Vérifier si une clé SSH est présente sur la VM, sinon en créer une
-if [ ! -f ~/.ssh/id_rsa ]; then
-    ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa -C "$USER"
-fi
-
-# Lire le contenu du fichier dans une variable
-contenu=$(cat ~/.ssh/id_rsa.pub)
-
-# Exporter la variable d'environnement
-export VARIABLE_CONTENU="$contenu"
-
-# Afficher le contenu exporté
-echo "$USER:$VARIABLE_CONTENU" > ssh_keys
+# Génération de l'inventaire avec les adresses IP
+    cd ./ansible
+    rm -f inventory.ini
+    cd ..
+    ./creation-inventory.sh >ansible/inventory.ini
 
 # --------------------------------------------------------------------
 
-# Récupère la liste des noms et des zones d'instance à l'aide de gcloud
-instances_info=$(gcloud compute instances list --project $GCP_PROJECT --format="csv(NAME,ZONE)")
+# # Création des clés SSH
 
-# Vérifie si des instances sont trouvées
-if [ -z "$instances_info" ]; then
-    echo "Aucune instance trouvée dans le projet $GCP_PROJECT."
-else
-    echo "Liste des noms et des zones d'instance dans le projet $GCP_PROJECT :"
-    echo "$instances_info"
+# # export user=joffreym2igcp
 
-    # Séparateur par défaut en bash (utilisé pour les boucles)
-    IFS=$'\n'
+# # Vérifier si une clé SSH est présente sur la VM, sinon en créer une
+# if [ ! -f ~/.ssh/id_rsa ]; then
+#     ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa -C "$user"
+# fi
 
-    # Boucle pour traiter chaque nom d'instance et sa zone
-    for instance_info in $instances_info; do
-    # Ignorer la ligne "name,zone"
-    if [[ "$instance_info" != "name,zone" ]]; then
-        # Découpe la ligne en nom et zone en utilisant des guillemets pour éviter les problèmes d'encodage
-        IFS=',' read -r instance_name instance_zone <<< "$instance_info"
+# # Lire le contenu du fichier dans une variable
+# contenu=$(cat ~/.ssh/id_rsa.pub)
 
-        echo "Traitement de l'instance : $instance_name (zone : $instance_zone)"
+# # Exporter la variable d'environnement
+# export VARIABLE_CONTENU="$contenu"
 
-        # Exécute la commande gcloud avec le nom d'instance et la zone actuels
-        gcloud compute instances add-metadata "$instance_name" --zone "$instance_zone" --metadata-from-file ssh-keys=ssh_keys
+# # Afficher le contenu exporté
+# echo "$user:$VARIABLE_CONTENU" > ssh_keys
 
-        # Vérifie le code de sortie de la commande gcloud
-        if [ $? -eq 0 ]; then
-            echo "Clé SSH ajoutée à l'instance $instance_name (zone : $instance_zone) avec succès."
-        else
-            echo "Une erreur s'est produite lors de l'ajout de la clé SSH à l'instance $instance_name (zone : $instance_zone)."
-        fi
-    fi
-done
-fi
+# # --------------------------------------------------------------------
+
+# # Récupère la liste des noms et des zones d'instance à l'aide de gcloud
+# instances_info=$(gcloud compute instances list --project $GCP_PROJECT --format="csv(NAME,ZONE)")
+
+# # Vérifie si des instances sont trouvées
+# if [ -z "$instances_info" ]; then
+#     echo "Aucune instance trouvée dans le projet $GCP_PROJECT."
+# else
+#     echo "Liste des noms et des zones d'instance dans le projet $GCP_PROJECT :"
+#     echo "$instances_info"
+
+#     # Séparateur par défaut en bash (utilisé pour les boucles)
+#     IFS=$'\n'
+
+#     # Boucle pour traiter chaque nom d'instance et sa zone
+#     for instance_info in $instances_info; do
+#     # Ignorer la ligne "name,zone"
+#     if [[ "$instance_info" != "name,zone" ]]; then
+#         # Découpe la ligne en nom et zone en utilisant des guillemets pour éviter les problèmes d'encodage
+#         IFS=',' read -r instance_name instance_zone <<< "$instance_info"
+
+#         echo "Traitement de l'instance : $instance_name (zone : $instance_zone)"
+
+#         # Exécute la commande gcloud avec le nom d'instance et la zone actuels
+#         gcloud compute instances add-metadata "$instance_name" --zone "$instance_zone" --metadata-from-file ssh-keys=ssh_keys
+
+#         # Vérifie le code de sortie de la commande gcloud
+#         if [ $? -eq 0 ]; then
+#             echo "Clé SSH ajoutée à l'instance $instance_name (zone : $instance_zone) avec succès."
+#         else
+#             echo "Une erreur s'est produite lors de l'ajout de la clé SSH à l'instance $instance_name (zone : $instance_zone)."
+#         fi
+#     fi
+# done
+# fi
 
 
 # --------------------------------------------------------------------
@@ -120,35 +128,13 @@ if ! command -v ansible &> /dev/null; then
 fi
 
 # Vérification de la présence des fichiers Ansible
-if [ ! -d "ansible" ] || [ ! -f "ansible/roles/wordpress/main.yml" ] || [ ! -f "ansible/roles/database/main.yml" ]|| [ ! -f "ansible/playbook.yml" ]|| [ ! -f "ansible/vars.yml" ]|| [ ! -f "ansible/gcp_compute.yml" ]|| [ ! -f "ansible/ansible.cfg" ]; then
+if [ ! -d "ansible" ] || [ ! -f "ansible/roles/wordpress/tasks/main.yml" ] || [ ! -f "ansible/roles/database/tasks/main.yml" ]|| [ ! -f "ansible/playbook.yml" ]|| [ ! -f "ansible/vars.yml" ]|| [ ! -f "ansible/inventory.ini" ]; then
     echo "Certains fichiers Ansible sont manquants. Clonage du référentiel..."
     git clone https://github.com/JoffreyBENA/TP1-VM_WORDPRESS.git
     cd TP1-VM_WORDPRESS/ansible
 else
     cd ansible
 fi
-
-# --------------------------------------------------------------------
-
-# # Récupération des adresses IP des VMs depuis les sorties Terraform
-# wordpress_vm_public_ip=$(terraform output wordpress_vm_public_ip)
-# db_vm_private_ip=$(terraform output db_vm_private_ip)
-
-# # Chemin vers le fichier hosts (inventaire Ansible)
-# hosts_file="./inventory/hosts"
-
-# # Création du fichier d'inventaire dynamique "hosts" pour Ansible
-# echo "Création du fichier hosts pour Ansible..."
-
-# echo "[wordpress_vm]" >> $hosts_file
-# echo $wordpress_vm_public_ip >> $hosts_file
-# echo "[db_vm]" >> $hosts_file
-# echo $db_vm_private_ip >> $hosts_file
-
-# echo "Le fichier d'inventaire Ansible a été créé : $hosts_file"
-
-# echo "wordpress_machine ansible_host=${wordpress_vm_public_ip}" >> $hosts_file
-# echo "database_machine ansible_host=${db_vm_private_ip}" >> $hosts_file
 
 # --------------------------------------------------------------------
 
@@ -176,7 +162,8 @@ fi
 
 # Déploiement avec Ansible
 echo "Déploiement avec Ansible..."
-ansible-playbook playbook.yml -i ./gcp_compute.yml -vvv
+# ansible-playbook playbook.yml -i ./gcp_compute.yml
+ansible-playbook -i ./inventory.ini playbook.yml -vvv
 cd ..
 
 # --------------------------------------------------------------------
@@ -189,7 +176,6 @@ WORDPRESS_INSTANCE="wordpress-vm"
 wordpress_ip=$(gcloud compute instances describe $WORDPRESS_INSTANCE --zone $ZONE --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 
 # URL de votre site WordPress
-wp_domain="monsite.com"  # Remplacez par le nom de domaine de votre site
 url_to_check="http://$wordpress_ip/wordpress"
 
 # Effectuer une requête GET à l'URL spécifiée et stocker le code de statut dans une variable

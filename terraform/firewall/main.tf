@@ -42,4 +42,5 @@ resource "google_compute_firewall" "db_vm" {
         ports    = ["3306"]
     }
     source_ranges = var.firewall_source
+    target_tags = [ "db-vm","wordpress-vm"]
 }

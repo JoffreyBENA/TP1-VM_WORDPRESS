@@ -10,5 +10,5 @@ output "db_vm_self_link" {
 
 output "db_vm_private_ip" {
     description = "Adresse IP privée de la machine virtuelle de base de données."
-    value = google_compute_instance.db_vm.network_interface[0].network_ip
+    value = google_compute_instance.db_vm.network_interface[0].access_config[0].nat_ip
 }

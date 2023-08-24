@@ -2,7 +2,7 @@ resource "google_compute_instance" "wordpress_vm" {
     name         = var.wordpress_vm
     machine_type = var.type
     zone         = var.zone
-    tags         = ["wordpress-vm","ansible"]
+    tags         = ["wordpress-vm"]
 
     service_account {
         email  = var.service_account_email

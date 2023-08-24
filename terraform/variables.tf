@@ -16,6 +16,12 @@ variable "zone" {
     default     = "europe-west9-a"
 }
 
+variable "user" {
+    default = "joffreym2igcp"
+    description = "Nom de l'utilisateur"
+    type = string
+}
+
 variable "subnet_cidr" {
     type        = string
     description = "CIDR de la sous-réseau"

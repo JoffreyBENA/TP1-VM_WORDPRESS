@@ -2,7 +2,7 @@ resource "google_compute_instance" "db_vm" {
     name         = var.db_vm
     machine_type = var.type
     zone         = var.zone
-    tags         = ["db-vm","ansible"]
+    tags         = ["db-vm"]
 
     service_account {
         email  = var.service_account_email

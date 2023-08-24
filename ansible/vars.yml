@@ -2,8 +2,10 @@
 wp_admin_user: "root"
 wp_admin_password: "root_password"
 
-mariadb_root_password: "mot_de_passe_root_mariadb"
+mariadb_root_password: "123"
 
-wp_db_name: "nom_de_la_base_de_donnees_wordpress"
-wp_db_user: "utilisateur_wordpress"
-wp_db_password: "mot_de_passe_utilisateur_wordpress"
+wp_db_name: "wordpress"
+wp_db_user: "joffreym2igcp"
+wp_db_password: "123"
+
+wordpress_instance_internal_ip: "10.0.0.2"
