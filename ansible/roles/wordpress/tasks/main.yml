@@ -11,6 +11,7 @@
     name: 
       - apache2               # ou nginx
       - php
+      - php-mysqli
       - libapache2-mod-php
       - php-mysql
     state: present
@@ -54,6 +55,32 @@
     owner: www-data
     group: www-data
     mode: '0755'
+
+# Suppression fichier html par default d'apache
+- name: Suppression fichier html par default d'apache
+  file:
+    path: "/var/www/html/index.html"
+    state: absent
+
+# Vérification si wp-config-sample.php existant
+- name: Vérification si wp-config-sample.php existant
+  stat:
+    path: "/var/www/html/wordpress/wp-config-sample.php"
+  register: "check_file_sample"
+
+# Renommer wp-config-sample.php
+- name: Renommer wp-config-sample.php
+  command: mv /var/www/html/wordpress/wp-config-sample.php "/var/www/html/wordpress/wp-config.php"
+  when: check_file_sample.stat.exists == True
+
+# Configurer wp-config.php afin de connecter php à la base de donnée
+- name: Configurer wp-config.php
+  template:
+    src: wp-config.php.j2
+    dest: "/var/www/html/wordpress/wp-config.php"
+    mode: 0600
+    backup: 'true'
+    force: 'true'
 
 # Redémarrage de Apache et PHP
 - name: Redémarrer Apache (ou Nginx) et PHP

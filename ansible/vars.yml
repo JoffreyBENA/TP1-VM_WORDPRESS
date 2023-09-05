@@ -5,9 +5,11 @@ mariadb_root_password: "123"
 wp_db_name: "wordpress"
 wp_db_user: "joffreym2igcp"
 wp_db_password: "123"
+
 wp_admin_user: "root"
 wp_admin_password: "root_password"
 
 # Variables pour le déploiement et la configuration de WordPress
 
-wordpress_instance_internal_ip: "10.0.0.2"
+database_instance_internal_ip: "10.0.0.2"
+
