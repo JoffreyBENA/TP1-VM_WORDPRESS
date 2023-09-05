@@ -20,25 +20,26 @@
 # Activation de l'extension MySQLi
 - name: Activer l'extension MySQLi
   lineinfile:
-    path: /etc/php/8.0/apache2/php.ini
+    path: /etc/php/8.2/apache2/php.ini
     regexp: "^;?extension=mysqli$"
     line: "extension=mysqli"
   notify: Redémarrer Apache
 
-# Démarrage Apache (ou Nginx) et PHP
-- name: Activer Apache (ou Nginx) et PHP
-  service:
-    name: 
-      - apache2   # ou nginx
-      - php-fpm
-    state: started
-    enabled: yes
+# Vérification si wordpress existant
+- name: "Vérification si wordpress existant"
+  stat:
+    path: "/var/www/html/wordpress"
 
 # Téléchargement de WordPress
 - name: Télécharger le package WordPress
   get_url:
     url: https://wordpress.org/latest.tar.gz
     dest: /tmp/wordpress-latest.tar.gz
+
+# Pause de 3 secondes pour le téléchargement
+- name: Pause de 3 secondes
+  pause:
+    seconds: 3
 
 # Extraction des fichiers WordPress
 - name: Extraire les fichiers WordPress
@@ -81,11 +82,3 @@
     mode: 0600
     backup: 'true'
     force: 'true'
-
-# Redémarrage de Apache et PHP
-- name: Redémarrer Apache (ou Nginx) et PHP
-  service:
-    name: 
-      - apache2   # ou nginx
-      - php-fpm
-    state: restarted
