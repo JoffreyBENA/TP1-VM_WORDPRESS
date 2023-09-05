@@ -1,9 +1,11 @@
 ---
+# Mise à jour des paquets
 - name: Mise à jour de la liste des paquets
   apt:
     update_cache: yes
   become: true
 
+# Installation de MariaDB
 - name: Installer MariaDB et ses dépendances
   apt:
     name:
@@ -13,13 +15,14 @@
     state: present
   become: true
 
+# Démarrage MariaDB
 - name: Démarrer le service MariaDB
   service:
     name: mariadb
     state: started
     enabled: yes
 
-# Autoriser wordpress à accéder à la database
+# Autorisation à Wordpress d'accéder à la Database
 - name: Autoriser Wordpress à accéder à la Database
   community.general.ufw:
     state: enabled
@@ -28,7 +31,7 @@
     from_ip: "{{ wordpress_instance_internal_ip }}"
     to_port: "3306"
 
-# Autoriser SSH depuis l'adresse ip du serveur database
+# Autorisation connection SSH depuis le serveur Database
 - name: Autoriser SSH depuis l'adresse IP du serveur Database
   community.general.ufw:
     state: enabled
@@ -37,7 +40,7 @@
     from_ip: "0.0.0.0/0"
     to_port: "22"
 
-# Activer journalisation pour le pare-feu
+# Activation des logs pour le pare-feu
 - name: Mettre en place le logging
   community.general.ufw:
     logging: 'on'
@@ -47,13 +50,14 @@
   community.general.ufw:
     state: reloaded
 
-
+# Sécurisation de MariaDB
 - name: Sécuriser l'installation de MariaDB
   mysql_user:
     name: root
     password: "{{ mariadb_root_password }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
+# Création d'une base de données pour WordPress
 - name: Créer une base de données pour WordPress
   mysql_db:
     name: "{{ wp_db_name }}" 
@@ -61,17 +65,19 @@
     login_password: "{{ mariadb_root_password }}"
     state: present
 
+# Création d'un utilisateur pour WordPress
 - name: Créer un utilisateur spécifique pour WordPress
   mysql_user:
     name: "{{ wp_db_user }}"          
     password: "{{ wp_db_password }}"  
-    priv: "{{ wp_db_name }}.*:ALL"    # Accorde tous les privilèges sur la base de données WordPress
+    priv: "{{ wp_db_name }}.*:ALL"
     host: "%"
     state: present
     login_user: root
     login_password: "{{ mariadb_root_password }}"
 
-- name: Réinitialiser les privilèges MySQL
+# Réinitilaisation des Privilèges 
+- name: Réinitialiser les privilèges MariaDB
   mysql_user:
     name: ""
     password: ""  
@@ -81,6 +87,7 @@
     login_password: "{{ mariadb_root_password }}"
   tags: mariadb
 
+# Autorisation de la connexion depuis toutes les adresses
 - name: Activer les connexions depuis toutes les adresses
   lineinfile:
     path: /etc/mysql/mariadb.conf.d/50-server.cnf
@@ -91,6 +98,7 @@
     - Redémarrer mariadb
   tags: mariadb
 
+# Redémarrage de MariaDB
 - name: Redémarrer MariaDB
   service:
     name: mariadb

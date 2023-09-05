@@ -1,26 +1,30 @@
 ---
+# Mise à jour des paquets
 - name: Mise à jour de la liste des paquets
   apt:
     update_cache: yes
   become: true
 
+# Installation de Apache, PHP et ses dépendances
 - name: Installer les paquets requis pour Apache (ou Nginx) et PHP
   apt:
     name: 
       - apache2               # ou nginx
       - php
-      - libapache2-mod-php    # ou php-fpm pour Nginx
-      # - php-mysql
-      # - php-mysqli
-      # - php-curl
-      # - php-gd
-      # - php-mbstring
-      # - php-xml
-      # - php-xmlrpc
-      # - mariadb_client
+      - libapache2-mod-php
+      - php-mysql
     state: present
   become: true
 
+# Activation de l'extension MySQLi
+- name: Activer l'extension MySQLi
+  lineinfile:
+    path: /etc/php/8.0/apache2/php.ini
+    regexp: "^;?extension=mysqli$"
+    line: "extension=mysqli"
+  notify: Redémarrer Apache
+
+# Démarrage Apache (ou Nginx) et PHP
 - name: Activer Apache (ou Nginx) et PHP
   service:
     name: 
@@ -29,17 +33,20 @@
     state: started
     enabled: yes
 
+# Téléchargement de WordPress
 - name: Télécharger le package WordPress
   get_url:
     url: https://wordpress.org/latest.tar.gz
     dest: /tmp/wordpress-latest.tar.gz
 
+# Extraction des fichiers WordPress
 - name: Extraire les fichiers WordPress
   unarchive:
     src: /tmp/wordpress-latest.tar.gz
     dest: /var/www/html
     remote_src: yes
 
+# Configuration de WordPress
 - name: Définir les permissions pour WordPress
   file:
     path: /var/www/html/wordpress
@@ -48,6 +55,7 @@
     group: www-data
     mode: '0755'
 
+# Redémarrage de Apache et PHP
 - name: Redémarrer Apache (ou Nginx) et PHP
   service:
     name: 

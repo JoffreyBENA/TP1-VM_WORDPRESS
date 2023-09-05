@@ -17,9 +17,9 @@ variable "zone" {
 }
 
 variable "user" {
-    default = "joffreym2igcp"
+    default     = "joffreym2igcp"
     description = "Nom de l'utilisateur"
-    type = string
+    type        = string
 }
 
 variable "subnet_cidr" {

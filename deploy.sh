@@ -138,6 +138,8 @@ fi
 
 # --------------------------------------------------------------------
 
+# cd .. 
+
 # # Vérification et création de clé SSH pour WordPress VM
 # if [ ! -f "$HOME/.ssh/id_rsa" ]; then
 #     echo "Création d'une clé SSH pour la machine WordPress..."
@@ -146,43 +148,38 @@ fi
 
 # # Copie de la clé publique sur la machine WordPress
 # echo "Copie de la clé publique sur la machine WordPress..."
-# ssh-copy-id -i "$HOME/.ssh/id_rsa.pub" "root@$wordpress_vm_public_ip"
-
-# # Vérification et création de clé SSH pour Database VM
-# if [ ! -f "$HOME/.ssh/id_rsa_db" ]; then
-#     echo "Création d'une clé SSH pour la machine Database..."
-#     ssh-keygen -t rsa -N "" -f "$HOME/.ssh/id_rsa_db"
-# fi
+# ssh-copy-id -i "$HOME/.ssh/id_rsa.pub" "joffreym2igcp@$wordpress_vm_public_ip"
 
 # # Copie de la clé publique sur la machine Database
 # echo "Copie de la clé publique sur la machine Database..."
-# ssh-copy-id -i "$HOME/.ssh/id_rsa_db.pub" "root@$db_vm_private_ip"
+# ssh-copy-id -i "$HOME/.ssh/id_rsa.pub" "joffreym2igcp@$db_vm_private_ip"
+
+# cd ansible
 
 # --------------------------------------------------------------------
 
 # Déploiement avec Ansible
 echo "Déploiement avec Ansible..."
-# ansible-playbook playbook.yml -i ./gcp_compute.yml
-ansible-playbook -i ./inventory.ini playbook.yml -vvv
+cd ansible
+ansible-playbook -i inventory.ini -b playbook.yml
 cd ..
 
 # --------------------------------------------------------------------
 
-# Utilisation des variables du projet
-ZONE="europe-west9-a"
-WORDPRESS_INSTANCE="wordpress-vm"
+echo -e "\033[1;35m- Etape 7/7: Vérification fonctionnement application\033[0m"
 
-# Récupère l'adresse IP publique de l'instance WordPress
-wordpress_ip=$(gcloud compute instances describe $WORDPRESS_INSTANCE --zone $ZONE --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+cd terraform
+wordpress_ip=$(terraform output wordpress_instance_ip | sed 's/"//g')
+curl_output=$(curl -s $wordpress_ip/wordpress)
 
-# URL de votre site WordPress
-url_to_check="http://$wordpress_ip/wordpress"
+echo $wordpress_ip
+echo $curl_output
+if echo "$curl_output" | grep -o "html"; then
+    echo "L'application WordPress est fonctionnelle."
 
-# Effectuer une requête GET à l'URL spécifiée et stocker le code de statut dans une variable
-status_code=$(curl -s -o /dev/null -w "%{http_code}" $url_to_check)
-
-if [ $status_code -eq 200 ] || [ $status_code -eq 301 ] || [ $status_code -eq 302 ]; then
-    echo "L'application WordPress est fonctionnelle. Code : $status_code"
+    # Récupération du titre de la page WordPress pour l'élément visuel
+    title=$(echo "$curl_output" | grep -o "<title>[^<]*" | sed -e 's/<title>//')
+    echo "Titre de la page WordPress : $title"
 else
-    echo "L'application WordPress n'est pas fonctionnelle. Code : $status_code"
+    echo "L'application WordPress ne semble pas fonctionner correctement."
 fi

@@ -1,3 +1,5 @@
+
+# PROVIDER
 provider "google" {
     credentials = file("../credentials.json")
     project     = var.project_id
@@ -6,6 +8,8 @@ provider "google" {
     scopes      = [ "https://www.googleapis.com/auth/cloud-platform" ]
 }
 
+
+# MODULES
 module "vpc" {
     source      = "./vpc"
     subnet_cidr = var.subnet_cidr
@@ -43,4 +47,10 @@ module "db_vm" {
     network_self_link       = module.vpc.network_self_link
     subnet_self_link        = module.vpc.subnet_self_link
     service_account_email   = module.service_account.service_account_email
+}
+
+# CLE SSH
+resource "google_compute_project_metadata_item" "ssh_keys" {
+    key   = "ssh-keys"
+    value = "${var.user}:${file("~/.ssh/id_rsa.pub")}"
 }

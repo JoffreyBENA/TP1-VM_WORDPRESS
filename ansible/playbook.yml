@@ -1,13 +1,18 @@
 ---
+# Déploiement de WordPress
 - name: Deploy WordPress
   hosts: wordpress-vm
   remote_user: joffreym2igcp
   gather_facts: false
   become: true
 
-  roles:
-  - wordpress
+  vars_files:
+    - vars.yml
 
+  roles:
+    - wordpress
+
+# Déploiement de MariaDB
 - name: Deploy Database
   hosts: db-vm
   remote_user: joffreym2igcp
@@ -18,4 +23,4 @@
     - vars.yml
 
   roles:
-  - database
+    - database
