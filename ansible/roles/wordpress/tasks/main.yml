@@ -5,25 +5,30 @@
     update_cache: yes
   become: true
 
+# Ajout référentiel Ondrej PPA
+- name: Ajouter le PPA PHP
+  apt_repository:
+    repo: ppa:ondrej/php
+
 # Installation de Apache, PHP et ses dépendances
 - name: Installer les paquets requis pour Apache (ou Nginx) et PHP
   apt:
     name: 
-      - apache2               # ou nginx
-      - php
-      - php-mysqli
-      - libapache2-mod-php
-      - php-mysql
+    - apache2              # ou nginx
+    - php8.0
+    - php8.0-mysqli
+    - apt-transport-https
+    - mysql-server
     state: present
   become: true
 
 # Activation de l'extension MySQLi
 - name: Activer l'extension MySQLi
   lineinfile:
-    path: /etc/php/8.2/apache2/php.ini
+    path: /etc/php/8.0/apache2/php.ini
     regexp: "^;?extension=mysqli$"
     line: "extension=mysqli"
-  notify: Redémarrer Apache
+  notify: redémarrer apache
 
 # Vérification si wordpress existant
 - name: "Vérification si wordpress existant"

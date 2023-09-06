@@ -1,15 +1,22 @@
-# Variables pour le déploiement et la configuration de MariaDB
+## -- Variables pour le déploiement et la configuration de MariaDB --
 
-mariadb_root_password: "123"
+# variables mysql
+mysql_root_password: "mdp"
 
-wp_db_name: "wordpress"
-wp_db_user: "joffreym2igcp"
-wp_db_password: "123"
+# Variable wordpress internal IP - Cette variable est construite automatiquement après le lancement du script ./deployement.sh. Ne pas changer. 
+wordpress_instance_internal_ip: "10.0.0.3"
 
-wp_admin_user: "root"
-wp_admin_password: "root_password"
 
-# Variables pour le déploiement et la configuration de WordPress
+#---------------------------------------------------------------------------------------#
 
+## -- Variables pour le déploiement et la configuration de WordPress --
+
+# variables mysql, doit correspondre aux variables côté rôle database
+
+mysql_user:     "wordpress_user" # à modifier si besoin
+mysql_password: "mdp" # à modifier si besoin
+mysql_db:       "wordpress" # à modifier si besoin
+
+
+# Variable database internal IP - Cette variable est construite automatiquement après le lancement du script ./deployement.sh. Ne pas changer. 
 database_instance_internal_ip: "10.0.0.2"
-

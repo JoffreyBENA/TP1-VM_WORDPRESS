@@ -22,55 +22,65 @@ gcloud services enable iam.googleapis.com --project=$GCP_PROJECT
 
 # --------------------------------------------------------------------
 
-echo -e "\033[1;32;4m-- Etape 2/6: Vérification de Terrafrom et Installation si nécessaire --\033[0m"
+echo -e "\033[1;32;4m-- Etape 2/7: Vérification de Terrafrom et Installation si nécessaire --\033[0m"
 
-# Vérification et installation de Terraform
+# Installation de Terraform s'il n'est pas installé
 if ! command -v terraform &> /dev/null; then
     echo "Terraform n'est pas installé. Installation en cours..."
-    # Commande d'installation de Terraform, ajustez-la en fonction de votre système d'exploitation
-    # Exemple pour Debian 12:
-    sudo apt-get update
-    sudo apt-get install terraform
-    exit 0
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list >/dev/null
+    sudo apt update
+    sudo apt install terraform
+    if [ $? -eq 0 ]; then
+        echo -e "\033[33mTerraform a été installé avec succès.\033[0m"
+    else
+        echo -e "\033[31mL'installation de Terraform a échoué.\033[0m"
+        exit 1
+    fi
+else
+    echo -e "\033[31mTerraform est déjà installé.\033[0m"
 fi
 
 # Vérification de la présence des fichiers Terraform
 if [ ! -f "terraform/vpc/variables.tf" ] || [ ! -f "terraform/vpc/main.tf" ] || [ ! -f "terraform/wordpress_vm/variables.tf" ] || [ ! -f "terraform/wordpress_vm/main.tf" ] || [ ! -f "terraform/db_vm/variables.tf" ] || [ ! -f "terraform/db_vm/main.tf" ] || [ ! -f "terraform/firewall/variables.tf" ] || [ ! -f "terraform/firewall/main.tf" ]; then
-    echo "Certains fichiers Terraform sont manquants. Clonage du référentiel..."
+    echo -e "\033[33mCertains fichiers Terraform sont manquants. Clonage du référentiel...\033[0m"
     git clone https://github.com/JoffreyBENA/TP1-VM_WORDPRESS.git
     cd TP1-VM_WORDPRESS/terraform
 else
     cd terraform
 fi
 
+# --------------------------------------------------------------------
+
+echo -e "\033[1;32;4m-- Etape 3/7: Initialisation de Terrafrom et Vréation des machines --\033[0m"
+
 # Initialisation de Terraform si c'est la première exécution
 if [ ! -d ".terraform" ]; then
-    echo "Initialisation de Terraform..."
+    echo -e "\033[33mInitialisation de Terraform...\033[0m"
     terraform init
 fi
 
 # Création des machines avec Terraform
-echo "Création des machines avec Terraform..."
+echo -e "\033[33mCréation des machines avec Terraform...\033[0m"
 terraform apply -auto-approve
 cd ..
 
 # --------------------------------------------------------------------
-echo -e "\033[1;32;4m-- Etape 3/6: Génération de l'inventaire avec les adresse IP --\033[0m"
+echo -e "\033[1;32;4m-- Etape 4/7: Génération de l'inventaire avec les adresse IP --\033[0m"
 
 # Génération de l'inventaire avec les adresses IP
-    cd ./ansible
-    rm -f inventory.ini
-    cd ..
-    ./creation-inventory.sh >ansible/inventory.ini
+echo -e "\033[33mCréation du fichier 'inventory.ini'...\033[0m"
+cd ./ansible
+rm -f inventory.ini
+cd ..
+./creation-inventory.sh >ansible/inventory.ini
 
 # --------------------------------------------------------------------
-echo -e "\033[1;32;4m-- Etape 4/6: Vérification de Ansible et Installation si nécessaire --\033[0m"
+echo -e "\033[1;32;4m-- Etape 5/7: Vérification de Ansible et Installation si nécessaire --\033[0m"
 
 # Vérification et installation d'Ansible
 if ! command -v ansible &> /dev/null; then
     echo "Ansible n'est pas installé. Installation en cours..."
-    # Commande d'installation d'Ansible, ajustez-la en fonction de votre système d'exploitation
-    # Exemple pour Debian 12:
     sudo apt update
     sudo apt install -y ansible
 fi
@@ -86,7 +96,7 @@ fi
 
 # --------------------------------------------------------------------
 
-echo -e "\033[1;32;4m-- Etape 5/6: Déploiement avec Ansible --\033[0m"
+echo -e "\033[1;32;4m-- Etape 6/7: Déploiement avec Ansible --\033[0m"
 
 # Déploiement avec Ansible
 echo "Déploiement avec Ansible..."
@@ -94,7 +104,8 @@ ansible-playbook -i inventory.ini -b playbook.yml -v
 cd ..
 
 # --------------------------------------------------------------------
-echo -e "\033[1;32;4m-- Etape 6/6: Vérification fonctionnement application --\033[0m"
+
+echo -e "\033[1;32;4m-- Etape 7/7: Vérification fonctionnement application --\033[0m"
 
 # Vérification fonctionnement application
 
