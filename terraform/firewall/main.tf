@@ -16,6 +16,7 @@ resource "google_compute_firewall" "allow-http-https" {
         ports    = ["80","443"]
     }
     source_ranges = var.firewall_source
+    target_tags = [ "wordpress-vm" ]
 }
 
 resource "google_compute_firewall" "allow-tcp-icmp-udp" {
@@ -41,6 +42,6 @@ resource "google_compute_firewall" "db_vm" {
         protocol = "tcp"
         ports    = ["3306"]
     }
-    source_ranges = var.firewall_source
+    source_ranges = ["10.0.0.0/24"]
     target_tags = [ "db-vm","wordpress-vm"]
 }
