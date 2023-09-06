@@ -5,14 +5,18 @@
     update_cache: yes
   become: true
 
-# Installation des dépandances mysql
+# Installation des dépendances mysql
 - name: MYSQL - Installer mysql
   apt:
     name:     
       - mysql-server
       - python3-pip
-      - python3-pymysql
-      - python3-setuptools
+    state: present
+
+# Installation pymysql via pip 
+- name: MYSQL - Install PyMySQL (Python3)
+  pip:
+    name: pymysql
     state: present
 
 # Démarrer et activer mysql
@@ -50,11 +54,10 @@
     priv: "*.*:ALL"
     state: present
 
-# Mettre à jour le bind-address dans mariadb.cnf
-- name: Mettre à jour le bind-address dans mariadb.cnf
+# Mettre à jour le bind-address dans mysqld.cnf
+- name: Mettre à jour le bind-address dans mysqld.cnf
   lineinfile:
-    path : "/etc/mysql/mariadb.conf.d/50-server.cnf"
+    path : "/etc/mysql/mysql.conf.d/mysqld.cnf"
     regexp: '^bind-address\s*='
     line: 'bind-address = 0.0.0.0'
-    backup: yes
   notify: restart mysql
