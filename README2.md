@@ -1,23 +1,90 @@
-Description des fichiers fournis
-README.md : Le fichier que vous lisez actuellement, qui contient la documentation du projet.
+# TP1-VM_WORDPRESS
 
-ansible : Le répertoire contenant les fichiers et les rôles Ansible pour le déploiement de votre application.
+Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud Platform (GCP)
 
-creation-inventory.sh : Un script pour générer un fichier d'inventaire Ansible à partir de votre infrastructure.
+## Description des fichiers fournis :
+```
+.
+├── README.md
+├── README2.md
+├── ansible
+│   ├── ansible.cfg
+│   ├── inventory.ini
+│   ├── playbook.yml
+│   ├── roles
+│   │   ├── database
+│   │   │   ├── handlers
+│   │   │   │   └── main.yml
+│   │   │   └── tasks
+│   │   │       └── main.yml
+│   │   └── wordpress
+│   │       ├── handlers
+│   │       │   └── main.yml
+│   │       ├── tasks
+│   │       │   └── main.yml
+│   │       └── templates
+│   │           └── wp-config.php.j2
+│   └── vars.yml
+├── creation-inventory.sh
+├── credentials.json
+├── deploy.sh
+├── deployment-schema
+│   └── deployment-wordpress-gcp.drawio.png
+├── ssh_keys
+├── terraform
+│   ├── db_vm
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── firewall
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── service_account
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── terraform.tfstate
+│   ├── terraform.tfstate.backup
+│   ├── variables.tf
+│   ├── vpc
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   └── wordpress_vm
+│       ├── main.tf
+│       ├── outputs.tf
+│       └── variables.tf
+├── terraform-destroy.sh
+├── terraform.tfstate
+└── tp_1_VM_WORDPRESS.pdf
+```
 
-credentials.json : Fichier de configuration contenant des informations d'identification (potentiellement pour Google Cloud Platform ou d'autres services).
+* README.md : Le fichier que vous lisez actuellement, qui contient la documentation du projet.
 
-deploy.sh : Un script pour déployer votre application en utilisant Ansible.
+* ansible : Le répertoire contenant les fichiers et les rôles Ansible pour le déploiement de votre application.
 
-deployment-schema : Le répertoire contenant des schémas de déploiement.
+* creation-inventory.sh : Un script pour générer un fichier d'inventaire Ansible à partir de votre infrastructure.
 
-ssh_keys : Répertoire potentiellement contenant des clés SSH pour l'infrastructure.
+* credentials.json : Fichier de configuration contenant des informations d'identification pour se connecter a votre compte GCP
 
-terraform : Le répertoire contenant les fichiers Terraform pour le déploiement de votre infrastructure.
+* deploy.sh : Un script pour déployer votre application en utilisant Terraform et Ansible.
 
-terraform-destroy.sh : Un script pour détruire l'infrastructure créée avec Terraform.
+* deployment-schema : Le répertoire contenant des schémas de déploiement.
 
-tp_1_VM_WORDPRESS.pdf : Un document PDF, potentiellement des instructions ou un guide.
+* ssh_keys : clés SSH pour l'infrastructure.
+
+* terraform : Le répertoire contenant les fichiers Terraform pour le déploiement de votre infrastructure.
+
+* terraform-destroy.sh : Un script pour détruire l'infrastructure créée avec Terraform.
+
+* tp_1_VM_WORDPRESS.pdf : Sujet du TP sous format PDF
+
+
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
 Description des pré-requis
 Pour exécuter ce projet avec succès, vous devez vous assurer de disposer des éléments suivants :
