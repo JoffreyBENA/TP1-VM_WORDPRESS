@@ -58,7 +58,7 @@ Le déploiement automatisé des sites WordPress sur GCP avec Terraform et Ansibl
     - L'architecture comprend deux machines virtuelles (VM) : une pour WordPress et une autre pour la base de données MySQL/MariaDB.
         - La machine WordPress est accessible publiquement et contient PHP, Apache et l'application WordPress.
         - La machine de base de données n'est pas accessible publiquement et contient MySQL/MariaDB avec un utilisateur spécifique pour WordPress.
-    - Ainsi les visiteurs accèdent au site WordPress via un équilibrage de charge (load balancer) qui dirige les requêtes vers les machines virtuelles (VM) du serveur Web. Le serveur Web communique avec le serveur de base de données pour stocker et récupérer les données de WordPress.
+        - Ainsi les visiteurs accèdent au site WordPress via un équilibrage de charge (load balancer) qui dirige les requêtes vers les machines virtuelles (VM) du serveur Web. Le serveur Web communique avec le serveur de base de données pour stocker et récupérer les données de WordPress.
 
 Configuration des scripts pour chaque client :
 
