@@ -3,6 +3,7 @@
 Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud Platform (GCP)
 
 ## Description des fichiers fournis :
+
 ```
 .
 ├── README.md
@@ -101,3 +102,5 @@ Le répertoire "terraform" contient les fichiers Terraform pour la création de 
 N'oubliez pas d'ajouter des détails spécifiques sur la manière de personnaliser les scripts et les configurations pour chaque client, le cas échéant.
 
 C'est une structure de base pour votre documentation README.md. Vous pouvez l'éditer et l'ajuster en fonction des détails spécifiques de votre projet et des informations supplémentaires que vous souhaitez inclure.
+
+![Alt text](deployment-schema/deployment-wordpress-gcp.drawio.png)
