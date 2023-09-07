@@ -94,6 +94,9 @@ else
     cd ansible
 fi
 
+# Ajoutez une pause de 5 secondes
+sleep 30
+
 # --------------------------------------------------------------------
 
 echo -e "\033[1;32;4m-- Etape 6/7: Déploiement avec Ansible --\033[0m"

@@ -13,7 +13,7 @@ wordpress_instance_internal_ip: "10.0.0.3"
 
 # variables mysql, doit correspondre aux variables côté rôle database
 
-mysql_user:     "wordpress_user" # à modifier si besoin
+mysql_user:     "joffreym2igcp" # à modifier si besoin
 mysql_password: "mdp" # à modifier si besoin
 mysql_db:       "wordpress" # à modifier si besoin
 
