@@ -51,6 +51,8 @@
   unarchive:
     src: /tmp/wordpress-latest.tar.gz
     dest: /var/www/html
+    owner: www-data
+    group: www-data
     remote_src: yes
 
 # Configuration de WordPress
