@@ -12,7 +12,7 @@
   roles:
     - wordpress
 
-# Déploiement de MariaDB
+# Déploiement de MySQL
 - name: Deploy Database
   hosts: db-vm
   remote_user: joffreym2igcp

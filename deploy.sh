@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\033[1;32;4m-- Etape 1/6: Déinition et Configuration du projet GCP --\033[0m"
+echo -e "\033[1;32;4m-- Etape 1/8: Déinition et Configuration du projet GCP --\033[0m"
 
 # Définition du projet GCP
 export GCP_PROJECT="pure-anthem-393513"  # Remplacez par le nom de votre projet
@@ -22,7 +22,30 @@ gcloud services enable iam.googleapis.com --project=$GCP_PROJECT
 
 # --------------------------------------------------------------------
 
-echo -e "\033[1;32;4m-- Etape 2/7: Vérification de Terrafrom et Installation si nécessaire --\033[0m"
+echo -e "\033[1;32;4m-- Etape 2/8: Vérification de la présence de la clé ssh et Génération si nécessaire --\033[0m"
+
+#!/bin/bash
+
+# Chemin du dossier .ssh
+ssh_dir="$HOME/.ssh"
+
+# Vérifier si le dossier .ssh existe
+if [ ! -d "$ssh_dir" ]; then
+    # Si le dossier n'existe pas, le créer
+    mkdir "$ssh_dir"
+fi
+
+# Vérifier si une clé SSH existe déjà
+if [ ! -f "$ssh_dir/id_rsa" ]; then
+    # Si la clé n'existe pas, générer une nouvelle clé SSH
+    ssh-keygen -t rsa -b 4096
+else
+    echo "Une clé SSH existe déjà dans le dossier $ssh_dir."
+fi
+
+# --------------------------------------------------------------------
+
+echo -e "\033[1;32;4m-- Etape 3/8: Vérification de Terrafrom et Installation si nécessaire --\033[0m"
 
 # Installation de Terraform s'il n'est pas installé
 if ! command -v terraform &> /dev/null; then
@@ -52,7 +75,7 @@ fi
 
 # --------------------------------------------------------------------
 
-echo -e "\033[1;32;4m-- Etape 3/7: Initialisation de Terrafrom et Vréation des machines --\033[0m"
+echo -e "\033[1;32;4m-- Etape 3/8: Initialisation de Terrafrom et Vréation des machines --\033[0m"
 
 # Initialisation de Terraform si c'est la première exécution
 if [ ! -d ".terraform" ]; then
@@ -66,7 +89,7 @@ terraform apply -auto-approve
 cd ..
 
 # --------------------------------------------------------------------
-echo -e "\033[1;32;4m-- Etape 4/7: Génération de l'inventaire avec les adresse IP --\033[0m"
+echo -e "\033[1;32;4m-- Etape 4/8: Génération de l'inventaire avec les adresse IP --\033[0m"
 
 # Génération de l'inventaire avec les adresses IP
 echo -e "\033[33mCréation du fichier 'inventory.ini'...\033[0m"
@@ -76,7 +99,7 @@ cd ..
 ./creation-inventory.sh >ansible/inventory.ini
 
 # --------------------------------------------------------------------
-echo -e "\033[1;32;4m-- Etape 5/7: Vérification de Ansible et Installation si nécessaire --\033[0m"
+echo -e "\033[1;32;4m-- Etape 5/8: Vérification de Ansible et Installation si nécessaire --\033[0m"
 
 # Vérification et installation d'Ansible
 if ! command -v ansible &> /dev/null; then
@@ -99,7 +122,7 @@ sleep 30
 
 # --------------------------------------------------------------------
 
-echo -e "\033[1;32;4m-- Etape 6/7: Déploiement avec Ansible --\033[0m"
+echo -e "\033[1;32;4m-- Etape 6/8: Déploiement avec Ansible --\033[0m"
 
 # Déploiement avec Ansible
 echo "Déploiement avec Ansible..."
@@ -108,7 +131,7 @@ cd ..
 
 # --------------------------------------------------------------------
 
-echo -e "\033[1;32;4m-- Etape 7/7: Vérification fonctionnement application --\033[0m"
+echo -e "\033[1;32;4m-- Etape 7/8: Vérification fonctionnement application --\033[0m"
 
 # Vérification fonctionnement application
 
