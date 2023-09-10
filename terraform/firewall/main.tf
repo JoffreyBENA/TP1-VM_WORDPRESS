@@ -35,7 +35,7 @@ resource "google_compute_firewall" "allow-tcp-icmp-udp" {
 }
 
 resource "google_compute_firewall" "db_vm" {
-    name    = "allow-MySQL"
+    name    = "allow-database"
     network = var.network_self_link
 
     allow {
