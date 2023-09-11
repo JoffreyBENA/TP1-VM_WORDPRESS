@@ -2,7 +2,7 @@
 
 Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud Platform (GCP)
 
-## Description des fichiers fournis
+## Description des fichiers fournis :
 
 ```
 .
