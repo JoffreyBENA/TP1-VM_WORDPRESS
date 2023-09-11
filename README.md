@@ -2,7 +2,7 @@
 
 Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud Platform (GCP)
 
-## Description des fichiers fournis :
+## Description des fichiers fournis
 
 ```
 .
@@ -73,7 +73,7 @@ Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud P
 * terraform-destroy.sh : Un script pour détruire l'infrastructure créée avec Terraform.
 * tp_1_VM_WORDPRESS.pdf : Sujet du TP sous format PDF
 
-## Description des pré-requis :
+## Description des pré-requis
 
 Pour exécuter ce projet avec succès, vous devez vous assurer de disposer des éléments suivants :
 
@@ -83,7 +83,7 @@ Pour exécuter ce projet avec succès, vous devez vous assurer de disposer des �
 * Un fichier "credentials.json" que vous aurez télécharger depuis la console GCP et stockée a la racine de votre dossier
 * La configuration de Google Cloud SDK : Assurez-vous que vous avez configuré Google Cloud SDK avec vos informations d'identification GCP. Cela vous permettra d'interagir avec votre projet GCP via la ligne de commande.
 
-## Schéma de présentation du déploiement :
+## Schéma de présentation du déploiement
 
 Voici le schéma permettant de visualiser le flux et l'inter-connection des différents ressources et services :
 
@@ -94,7 +94,7 @@ L'architecture comprend deux machines virtuelles (VM), une pour WordPress et une
 * La machine WordPress est accessible publiquement et contient PHP, Apache et l'application WordPress.
 * La machine de base de données n'est pas accessible publiquement et contient MySQL avec un utilisateur spécifique pour WordPress.
 
-## Composition et Configuration du dossier Ansible :
+## Composition et Configuration du dossier Ansible
 
 * ansible.cfg : Ce fichier contient la configuration globale d'Ansible pour le projet. Il inclus des paramètres tels que les chemins vers les fichiers d'inventaire, les rôles par défaut, et d'autres options de configuration spécifiques à Ansible.
 
@@ -107,19 +107,19 @@ L'architecture comprend deux machines virtuelles (VM), une pour WordPress et une
 * roles/database : Ce rôle est chargé de la configuration de la base de données. Il comprend des tâches telles que l'installation et la configuration d'un serveur de base de données.
 * roles/wordpress : Ce rôle gère la configuration de l'application WordPress. Il inclut des tâches telles que le déploiement de fichiers WordPress et la configuration de l'application.
 
-* >vars.yml** : Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. == CONFIGURABLE
+* >vars.ym : Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. == CONFIGURABLE
 
-## Composition et Configuration du dossier Terrafrom:
+## Composition et Configuration du dossier Terrafrom
 
 * db_vm : Ce répertoire contient les fichiers spécifiques à la création d'une machine virtuelle pour la base de données.
 * main.tf : Ce fichier définit la configuration principale pour la création de la machine virtuelle de la base de données, y compris les détails tels que le type de machine, l'image, et les paramètres réseau.
 * outputs.tf : Ce fichier définit les sorties (outputs) que vous souhaitez obtenir après la création de la machine virtuelle de la base de données.
-* >variables.tf ** : Ce fichier contient les déclarations de variables spécifiques à la création de la machine virtuelle de la base de données == CONFIGURABLE
+* >variables.tf : Ce fichier contient les déclarations de variables spécifiques à la création de la machine virtuelle de la base de données == CONFIGURABLE
 
 * firewall : Ce répertoire contient les fichiers pour la configuration des règles de pare-feu.
 * main.tf : Ce fichier définit la configuration des règles de pare-feu pour votre infrastructure.
 * outputs.tf : Il définit les sorties liées aux règles de pare-feu.
-* >variables.tf ** Ce fichier contient les déclarations de variables spécifiques aux règles de pare-feu == CONFIGURABLE
+* >variables.tf Ce fichier contient les déclarations de variables spécifiques aux règles de pare-feu == CONFIGURABLE
 
 * main.tf : Ce fichier principal de Terraform contient la configuration générale du projet, telle que la définition du fournisseur de cloud, et des modules deployés
 * outputs.tf : Ce fichier définit les sorties globales que vous souhaitez obtenir après le déploiement de l'ensemble de l'infrastructure.
@@ -127,22 +127,29 @@ L'architecture comprend deux machines virtuelles (VM), une pour WordPress et une
 * service_account : Ce répertoire contient les fichiers liés à la configuration du compte de service.
 * main.tf : Il définit la configuration liée au compte de service, généralement utilisé pour gérer les autorisations dans l'infrastructure cloud.
 * outputs.tf : Ce fichier définit les sorties liées au compte de service.
-* >variables.tf ** : Vous pouvez personnaliser les variables liées au compte de service en fonction de vos besoins.
+* >variables.tf : Vous pouvez personnaliser les variables liées au compte de service en fonction de vos besoins.
 
 * terraform.tfstate et terraform.tfstate.backup : Ces fichiers stockent l'état actuel de votre infrastructure Terraform. Ne les modifiez pas manuellement, car Terraform les gère automatiquement.
 
-* >variables.tf ** : Ce fichier principal contient les déclarations de variables globales pour votre projet Terraform. Vous pouvez personnaliser ces variables en fonction de vos besoins spécifiques.
+* >variables.tf : Ce fichier principal contient les déclarations de variables globales pour votre projet Terraform. Vous pouvez personnaliser ces variables en fonction de vos besoins spécifiques.
 
 * vpc : Ce répertoire contient les fichiers spécifiques à la création de votre réseau virtuel (VPC).
 * main.tf : Il définit la configuration pour la création du VPC, y compris les sous-réseaux et les règles de sécurité.
 * outputs.tf : Ce fichier définit les sorties liées au VPC.
-* >variables.tf ** : Vous pouvez personnaliser les variables relatives au VPC pour répondre aux exigences de votre projet.
+* >variables.tf : Vous pouvez personnaliser les variables relatives au VPC pour répondre aux exigences de votre projet.
 
 * wordpress_vm : Ce répertoire contient les fichiers spécifiques à la création de la machine virtuelle pour WordPress, de manière similaire au répertoire "db_vm".
 
-## Composition et Configuration des scripts Bash:
+## Composition et Configuration des scripts Bash :
 
+* creation-inventory.sh : Ce script génère un fichier d'inventaire Ansible dynamique à partir de l'infrastructure déployé par Terraform.
 
-Une fois que vous avez effectué ces modifications pour chaque client, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer les sites WordPress sur GCP en utilisant la commande suivante :
+* >> deploy.sh : Ce script est le SCRIPT principal pour déployer l'infrastructure. 
+
+* terraform-destroy.sh : Ce script est  utilisé pour détruire l'infrastructure que vous avez créée à l'aide de Terraform.
+
+Une fois que vous avez effectué ces modifications des variables pour l'ensemble des dossiers, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer les sites WordPress sur GCP en utilisant la commande suivante :
 
     bash deploy.sh
+
+ENJOY
