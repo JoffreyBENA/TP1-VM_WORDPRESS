@@ -1,103 +1,148 @@
 # TP1-VM_WORDPRESS
 
-Documentation du Déploiement Automatisé de Sites WordPress sur Google Cloud Platform
+Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud Platform (GCP)
 
-Description des fichiers fournis :
+## Description des fichiers fournis :
 
-Ce dépôt contient les fichiers nécessaires pour automatiser le déploiement de sites WordPress sur Google Cloud Platform (GCP) en utilisant Terraform et Ansible.
+```
+.
+├── README.md
+├── ansible
+│   ├── ansible.cfg
+│   ├── inventory.ini
+│   ├── playbook.yml
+│   ├── roles
+│   │   ├── database
+│   │   │   ├── handlers
+│   │   │   │   └── main.yml
+│   │   │   └── tasks
+│   │   │       └── main.yml
+│   │   └── wordpress
+│   │       ├── handlers
+│   │       │   └── main.yml
+│   │       ├── tasks
+│   │       │   └── main.yml
+│   │       └── templates
+│   │           └── wp-config.php.j2
+│   └── vars.yml
+├── creation-inventory.sh
+├── credentials.json
+├── deploy.sh
+├── deployment-schema
+│   └── deployment-wordpress-gcp.drawio.png
+├── ssh_keys
+├── terraform
+│   ├── db_vm
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── firewall
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── service_account
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── terraform.tfstate
+│   ├── terraform.tfstate.backup
+│   ├── variables.tf
+│   ├── vpc
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   └── wordpress_vm
+│       ├── main.tf
+│       ├── outputs.tf
+│       └── variables.tf
+├── terraform-destroy.sh
+├── terraform.tfstate
+└── tp_1_VM_WORDPRESS.pdf
+```
 
-    1- Dossier Terraform :
+* README.md : Le fichier que vous lisez actuellement, qui contient la documentation du projet.
+* ansible : Le répertoire contenant les fichiers et les rôles Ansible pour le déploiement de votre application.
+* creation-inventory.sh : Un script pour générer un fichier d'inventaire Ansible à partir de votre infrastructure.
+* credentials.json : Fichier de configuration contenant des informations d'identification pour se connecter a votre compte GCP
+* deploy.sh : Un script pour déployer votre application en utilisant Terraform et Ansible.
+* deployment-schema : Le répertoire contenant des schémas de déploiement.
+* ssh_keys : clés SSH pour l'infrastructure.
+* terraform : Le répertoire contenant les fichiers Terraform pour le déploiement de votre infrastructure.
+* terraform-destroy.sh : Un script pour détruire l'infrastructure créée avec Terraform.
+* tp_1_VM_WORDPRESS.pdf : Sujet du TP sous format PDF
 
-        - vpc/variables.tf : Définition des variables Terraform pour le réseau VPC.
-        - vpc/main.tf : Configuration Terraform pour la création du VPC, du sous-réseau et des règles de pare-feu.
-        - wordpress_vm/variables.tf : Définition des variables Terraform pour la machine WordPress.
-        - wordpress_vm/main.tf : Configuration Terraform pour la création de la machine WordPress.
-        - db_vm/variables.tf : Définition des variables Terraform pour la machine de base de données.
-        - db_vm/main.tf : Configuration Terraform pour la création de la machine de base de données.
+## Description des pré-requis :
 
-    2- Dossier Ansible :
+Pour exécuter ce projet avec succès, vous devez vous assurer de disposer des éléments suivants :
 
-        - playbook.yml : Playbook Ansible pour le déploiement des éléments requis sur les machines.
-        - Dossier roles/wordpress : Contient les tâches et les modèles Ansible pour le déploiement de WordPress.
-        - Dossier roles/database : Contient les tâches Ansible pour la configuration de la base de données.
+* Un ordinateur avec Ansible et Terraform installé.
+* Un compte GCP avec les autorisations appropriées pour créer des machines virtuelles (VM) et des réseaux VPC.
+* Une clé SSH nécessaire pour accéder à vos machines virtuelles déployées
+* Un fichier "credentials.json" que vous aurez télécharger depuis la console GCP et stockée a la racine de votre dossier
+* La configuration de Google Cloud SDK : Assurez-vous que vous avez configuré Google Cloud SDK avec vos informations d'identification GCP. Cela vous permettra d'interagir avec votre projet GCP via la ligne de commande.
 
-    3- Script Bash :
+## Schéma de présentation du déploiement :
 
-        - deploy.sh : Script bash qui automatise le déploiement en vérifiant les prérequis, en lançant Terraform et Ansible, puis en effectuant une vérification de l'application.
+Voici le schéma permettant de visualiser le flux et l'inter-connection des différents ressources et services :
 
-    1- main.tf : Fichier principal de Terraform pour la création des ressources GCP (VM, réseau, pare-feu, etc.).
+![Alt text](deployment-schema/deployment-wordpress-gcp.drawio.png)
 
-    2- variables.tf : Fichier de définition des variables Terraform.
+L'architecture comprend deux machines virtuelles (VM), une pour WordPress et une autre pour la base de données MySQL :
 
-    3- outputs.tf : Fichier de définition des sorties Terraform pour récupérer les informations des ressources créées.
+* La machine WordPress est accessible publiquement et contient PHP, Apache et l'application WordPress.
+* La machine de base de données n'est pas accessible publiquement et contient MySQL avec un utilisateur spécifique pour WordPress.
 
-    4- playbook.yml : Fichier Ansible pour déployer et configurer les applications WordPress et la base de données.
+## Composition et Configuration du dossier Ansible :
 
-    5- roles/ : Répertoire contenant les rôles Ansible pour WordPress et la base de données.
+* ansible.cfg : Ce fichier contient la configuration globale d'Ansible pour le projet. Il inclus des paramètres tels que les chemins vers les fichiers d'inventaire, les rôles par défaut, et d'autres options de configuration spécifiques à Ansible.
 
-    6- inventory/hosts : Fichier d'inventaire Ansible pour définir les machines cibles.
+* inventory.ini : Le fichier "inventory.ini" est notre inventaire Ansible. Il répertorie les serveurs ou les hôtes que nous souhaitons gérer avec Ansible. Les adresses IP et  les noms d'hôte de nos machines virtuelles sont spécifiés dans ce fichier.
 
-    7- deploy.sh : Script Bash pour exécuter les scripts Terraform et Ansible.
+* playbook.yml : Le fichier "playbook.yml" est le playbook Ansible principal pour ce projet. Il contient une liste d'actions à exécuter sur les hôtes répertoriés dans l'inventaire. Toutes les tâches spécifiques que nous souhaitons automatiser sont définies dans ce playbook.
 
-Prérequis :
+* roles : Le répertoire "roles" contient les rôles Ansible qui définissent les actions à effectuer dans notre infrastructure. Nous avons deux rôles : "database" et "wordpress". Chaque rôle comprend des répertoires "handlers" pour les gestionnaires d'événements, "tasks" pour les tâches spécifiques, et parfois "templates" pour les fichiers de modèle.
 
-Avant de procéder au déploiement automatisé, assurez-vous de disposer des éléments suivants :
+* roles/database : Ce rôle est chargé de la configuration de la base de données. Il comprend des tâches telles que l'installation et la configuration d'un serveur de base de données.
+* roles/wordpress : Ce rôle gère la configuration de l'application WordPress. Il inclut des tâches telles que le déploiement de fichiers WordPress et la configuration de l'application.
 
-    1- Compte Google Cloud Platform (GCP) : Vous devez avoir un compte GCP avec les droits nécessaires pour créer des ressources telles que des machines virtuelles (VM) et des réseaux VPC.
+* >vars.yml** : Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. == CONFIGURABLE
 
-    2- Terraform : Assurez-vous que Terraform est installé sur votre machine de développement. Vous pouvez l'installer en suivant les instructions spécifiques à votre système d'exploitation.
+## Composition et Configuration du dossier Terrafrom:
 
-    3- Ansible : Vérifiez que vous avez Ansible installé sur votre machine. Si ce n'est pas le cas, installez-le en suivant les instructions adaptées à votre système d'exploitation.
+* db_vm : Ce répertoire contient les fichiers spécifiques à la création d'une machine virtuelle pour la base de données.
+* main.tf : Ce fichier définit la configuration principale pour la création de la machine virtuelle de la base de données, y compris les détails tels que le type de machine, l'image, et les paramètres réseau.
+* outputs.tf : Ce fichier définit les sorties (outputs) que vous souhaitez obtenir après la création de la machine virtuelle de la base de données.
+* >variables.tf ** : Ce fichier contient les déclarations de variables spécifiques à la création de la machine virtuelle de la base de données == CONFIGURABLE
 
-    4- Configuration de Google Cloud SDK : Assurez-vous que vous avez configuré Google Cloud SDK avec vos informations d'identification GCP. Cela vous permettra d'interagir avec votre projet GCP via la ligne de commande.
+* firewall : Ce répertoire contient les fichiers pour la configuration des règles de pare-feu.
+* main.tf : Ce fichier définit la configuration des règles de pare-feu pour votre infrastructure.
+* outputs.tf : Il définit les sorties liées aux règles de pare-feu.
+* >variables.tf ** Ce fichier contient les déclarations de variables spécifiques aux règles de pare-feu == CONFIGURABLE
 
-Schéma de présentation du déploiement :
+* main.tf : Ce fichier principal de Terraform contient la configuration générale du projet, telle que la définition du fournisseur de cloud, et des modules deployés
+* outputs.tf : Ce fichier définit les sorties globales que vous souhaitez obtenir après le déploiement de l'ensemble de l'infrastructure.
 
-Le déploiement automatisé des sites WordPress sur GCP avec Terraform et Ansible suit l'architecture suivante (voir le schéma dans le dossier TP1-VM_WORDPRESS/deployment-schema ):
+* service_account : Ce répertoire contient les fichiers liés à la configuration du compte de service.
+* main.tf : Il définit la configuration liée au compte de service, généralement utilisé pour gérer les autorisations dans l'infrastructure cloud.
+* outputs.tf : Ce fichier définit les sorties liées au compte de service.
+* >variables.tf ** : Vous pouvez personnaliser les variables liées au compte de service en fonction de vos besoins.
 
-    - L'architecture comprend deux machines virtuelles (VM) : une pour WordPress et une autre pour la base de données MySQL/MariaDB.
-        - La machine WordPress est accessible publiquement et contient PHP, Apache et l'application WordPress.
-        - La machine de base de données n'est pas accessible publiquement et contient MySQL/MariaDB avec un utilisateur spécifique pour WordPress.
-        - Ainsi les visiteurs accèdent au site WordPress via un équilibrage de charge (load balancer) qui dirige les requêtes vers les machines virtuelles (VM) du serveur Web. Le serveur Web communique avec le serveur de base de données pour stocker et récupérer les données de WordPress.
+* terraform.tfstate et terraform.tfstate.backup : Ces fichiers stockent l'état actuel de votre infrastructure Terraform. Ne les modifiez pas manuellement, car Terraform les gère automatiquement.
 
-Configuration des scripts pour chaque client :
+* >variables.tf ** : Ce fichier principal contient les déclarations de variables globales pour votre projet Terraform. Vous pouvez personnaliser ces variables en fonction de vos besoins spécifiques.
 
-Pour configurer le déploiement pour chaque client, vous devez effectuer les étapes suivantes :
+* vpc : Ce répertoire contient les fichiers spécifiques à la création de votre réseau virtuel (VPC).
+* main.tf : Il définit la configuration pour la création du VPC, y compris les sous-réseaux et les règles de sécurité.
+* outputs.tf : Ce fichier définit les sorties liées au VPC.
+* >variables.tf ** : Vous pouvez personnaliser les variables relatives au VPC pour répondre aux exigences de votre projet.
 
-    1- Modifier les fichiers Terraform dans le répertoire vpc pour spécifier le projet GCP et la région souhaités.
+* wordpress_vm : Ce répertoire contient les fichiers spécifiques à la création de la machine virtuelle pour WordPress, de manière similaire au répertoire "db_vm".
 
-    2- Modifier les fichiers Terraform dans le répertoire wordpress_vm pour ajuster la taille de la VM et les autres paramètres selon les besoins du client.
+## Composition et Configuration des scripts Bash:
 
-    3- Modifier les fichiers Terraform dans le répertoire db_vm pour ajuster la taille de la VM et les autres paramètres selon les besoins du client.
-
-    4- Dans le fichier playbook.yml, ajustez les tâches Ansible selon les spécifications du client, telles que l'installation de plugins WordPress, la personnalisation du thème, etc.
-
-    5- Dans le fichier inventory/hosts, remplacez les adresses IP par les adresses IP réelles des machines cibles du client.
 
 Une fois que vous avez effectué ces modifications pour chaque client, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer les sites WordPress sur GCP en utilisant la commande suivante :
 
     bash deploy.sh
-
-Assurez-vous que les outils requis (Terraform, Ansible) sont installés et que vous disposez des autorisations nécessaires pour accéder à GCP et aux machines cibles.
-
-Pour configurer les scripts pour chaque client, vous devez effectuer les étapes suivantes :
-
-    1- Dossier Terraform :
-
-        - Dans les fichiers vpc/variables.tf, wordpress_vm/variables.tf et db_vm/variables.tf, ajustez les variables selon les besoins spécifiques du client. Par exemple, vous pouvez modifier la région, la zone, etc.
-
-    2- Dossier Ansible :
-
-        - Dans le playbook playbook.yml, personnalisez les tâches selon les besoins du client. Par exemple, vous pouvez ajouter des rôles supplémentaires, des tâches de configuration spécifiques, etc.
-        - Dans les dossiers roles/wordpress et roles/database, personnalisez les modèles et les tâches Ansible en fonction des exigences du client. Vous pouvez personnaliser les fichiers de configuration WordPress, les utilisateurs de base de données, etc.
-
-    3- Script Bash :
-
-        - Dans le script deploy.sh, personnalisez les commandes d'installation de Terraform et d'Ansible pour correspondre à votre système d'exploitation.
-        - Dans le bloc "Vérification de l'application", remplacez la commande curl et le texte attendu par des vérifications spécifiques à l'application du client. Par exemple, vous pouvez vérifier la présence d'un élément personnalisé sur la page d'accueil du site.
-
-En personnalisant les fichiers et les scripts pour chaque client, vous pouvez créer des configurations uniques pour chaque déploiement de site WordPress sur Google Cloud Platform.
-
-N'oubliez pas de sauvegarder et versionner tous les fichiers de configuration et les scripts pour assurer une gestion efficace et reproductible des déploiements.
-
-Cette documentation vous fournit les informations nécessaires pour utiliser les fichiers Terraform, Ansible et le script Bash afin de déployer automatiquement des sites WordPress dans des machines virtuelles sur Google Cloud Platform.

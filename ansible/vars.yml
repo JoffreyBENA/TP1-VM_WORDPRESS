@@ -1,19 +1,14 @@
-## -- Variables pour le déploiement et la configuration de MySQL --
+## -- Variables pour le déploiement et la configuration de WordPress et MySQL --
 
-# Variable wordpress internal IP - Cette variable est construite automatiquement après le lancement du script ./deployement.sh. Ne pas changer. 
+# Variable wordpress internal IP :
 wordpress_instance_internal_ip: "10.0.0.3"
-
+# Variable database internal IP :
+database_instance_internal_ip: "10.0.0.2"
 
 #---------------------------------------------------------------------------------------#
 
-## -- Variables pour le déploiement et la configuration de WordPress --
-
-# variables mysql, doit correspondre aux variables côté rôle database
-
+# variables mysql:
 mysql_user: "joffreym2igcp" # à modifier si besoin
 mysql_password: "mdp" # à modifier si besoin
 mysql_db: "wordpress" # à modifier si besoin
 mysql_root_password: "mdp"
-
-# Variable database internal IP - Cette variable est construite automatiquement après le lancement du script ./deployement.sh. Ne pas changer. 
-database_instance_internal_ip: "10.0.0.2"
