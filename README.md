@@ -152,4 +152,4 @@ Une fois que vous avez effectué ces modifications des variables pour l'ensemble
 
     bash deploy.sh
 
-ENJOY
+ENJOY !
