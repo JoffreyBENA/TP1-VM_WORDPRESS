@@ -106,7 +106,13 @@ if ! command -v ansible &> /dev/null; then
     echo "Ansible n'est pas installé. Installation en cours..."
     sudo apt update
     sudo apt install -y ansible
-fi
+    if [ $? -eq 0 ]; then
+        echo -e "\033[0;32mAnsible a été installé avec succès.\033[0m"
+    else
+        echo -e "\033[31mL'installation de Ansible a échoué.\033[0m"
+        exit 1
+    fi
+else
 
 # Vérification de la présence des fichiers Ansible
 if [ ! -d "ansible" ] || [ ! -f "ansible/roles/wordpress/tasks/main.yml" ] || [ ! -f "ansible/roles/database/tasks/main.yml" ]|| [ ! -f "ansible/playbook.yml" ]|| [ ! -f "ansible/vars.yml" ]|| [ ! -f "ansible/inventory.ini" ]; then
@@ -126,7 +132,7 @@ echo -e "\033[1;32;4m-- Etape 6/8: Déploiement avec Ansible --\033[0m"
 
 # Déploiement avec Ansible
 echo "Déploiement avec Ansible..."
-ansible-playbook -i inventory.ini -b playbook.yml -v
+ansible-playbook -i inventory.ini -b playbook.yml
 cd ..
 
 # --------------------------------------------------------------------
@@ -143,11 +149,11 @@ curl_output=$(curl -s $wordpress_ip/wordpress)
 echo $wordpress_ip
 echo $curl_output
 if echo "$curl_output" | grep -o "html"; then
-    echo "L'application WordPress est fonctionnelle."
+    echo -e "\033[0;32mL'application WordPress est fonctionnelle.\033[0m"
 
     # Récupération du titre de la page WordPress pour l'élément visuel
     title=$(echo "$curl_output" | grep -o "<title>[^<]*" | sed -e 's/<title>//')
     echo "Titre de la page WordPress : $title"
 else
-    echo "L'application WordPress ne semble pas fonctionner correctement."
+    echo -e "\033[0;31mL'application WordPress ne semble pas fonctionner correctement.\033[0m"
 fi
