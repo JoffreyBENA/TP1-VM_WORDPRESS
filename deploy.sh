@@ -113,6 +113,8 @@ if ! command -v ansible &> /dev/null; then
         exit 1
     fi
 else
+    echo -e "\033[31mTerraform est déjà installé.\033[0m"
+fi
 
 # Vérification de la présence des fichiers Ansible
 if [ ! -d "ansible" ] || [ ! -f "ansible/roles/wordpress/tasks/main.yml" ] || [ ! -f "ansible/roles/database/tasks/main.yml" ]|| [ ! -f "ansible/playbook.yml" ]|| [ ! -f "ansible/vars.yml" ]|| [ ! -f "ansible/inventory.ini" ]; then
