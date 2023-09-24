@@ -1,14 +1,14 @@
 ## -- Variables pour le déploiement et la configuration de WordPress et MySQL --
 
 # Variable wordpress internal IP :
-wordpress_instance_internal_ip: "10.0.0.3"
+wordpress_vm_internal_ip: "10.0.0.3"
 # Variable database internal IP :
-database_instance_internal_ip: "10.0.0.2"
+db_vm_internal_ip: "10.0.0.2"
 
 #---------------------------------------------------------------------------------------#
 
 # variables mysql:
 mysql_user: "joffreym2igcp" # à modifier si besoin
-mysql_password: "mdp" # à modifier si besoin
-mysql_db: "wordpress" # à modifier si besoin
-mysql_root_password: "mdp"
+mysql_password: "mdp"       # à modifier si besoin
+mysql_db: "wordpress"       # à modifier si besoin
+mysql_root_password: "mdp"  # à modifier si besoin

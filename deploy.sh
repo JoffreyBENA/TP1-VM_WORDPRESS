@@ -89,14 +89,28 @@ terraform apply -auto-approve
 cd ..
 
 # --------------------------------------------------------------------
-echo -e "\033[1;32;4m-- Etape 4/8: Génération de l'inventaire avec les adresse IP --\033[0m"
+echo -e "\033[1;32;4m-- Etape 4/8: Génération des inventaires dynamiques Ansible  --\033[0m"
 
-# Génération de l'inventaire avec les adresses IP
+# Génération de l'inventaire dynamique dans le fichiers inventori.ini avec les adresses IP externes des VMs déployées par Terraform :
 echo -e "\033[33mCréation du fichier 'inventory.ini'...\033[0m"
 cd ./ansible
 rm -f inventory.ini
 cd ..
 ./creation-inventory.sh >ansible/inventory.ini
+
+# # Génération de l'inventaire dynamique dans le fichiers vars.yml avec les adresse IP internet des Vms déployées par Terraform :
+
+# # Remplacement des adresses IP dans le fichier vars.yml
+cd ./terraform
+wordpress_vm_internal_ip=$(terraform output wordpress_vm_internal_ip | sed 's/"//g')
+db_vm_internal_ip=$(terraform output db_vm_internal_ip | sed 's/"//g')
+
+sed -i "" "s/^wordpress_vm_internal_ip:.*/wordpress_vm_internal_ip: \"$wordpress_vm_internal_ip\"/" ../ansible/vars.yml
+sed -i "" "s/^db_vm_internal_ip:.*/db_vm_internal_ip: \"$db_vm_internal_ip\"/" ../ansible/vars.yml
+
+cd ..
+
+echo -e "\033[0;32mLes adresses IP internes ont été mises à jour dans le fichier vars.yml.\033[0m"
 
 # --------------------------------------------------------------------
 echo -e "\033[1;32;4m-- Etape 5/8: Vérification de Ansible et Installation si nécessaire --\033[0m"
@@ -113,7 +127,7 @@ if ! command -v ansible &> /dev/null; then
         exit 1
     fi
 else
-    echo -e "\033[31mTerraform est déjà installé.\033[0m"
+    echo -e "\033[31mAnsible est déjà installé.\033[0m"
 fi
 
 # Vérification de la présence des fichiers Ansible
@@ -125,10 +139,10 @@ else
     cd ansible
 fi
 
-# Ajoutez une pause de 5 secondes
+# Ajoutez une pause de 30 secondes
 sleep 30
 
-# --------------------------------------------------------------------
+: # --------------------------------------------------------------------
 
 echo -e "\033[1;32;4m-- Etape 6/8: Déploiement avec Ansible --\033[0m"
 
@@ -144,7 +158,7 @@ echo -e "\033[1;32;4m-- Etape 7/8: Vérification fonctionnement application --\0
 # Vérification fonctionnement application
 
 cd terraform
-wordpress_ip=$(terraform output $wordpress_vm_public_ip | sed 's/"//g')
+wordpress_ip=$(terraform output wordpress_vm_public_ip | sed 's/"//g')
 
 curl_output=$(curl -s $wordpress_ip/wordpress)
 
