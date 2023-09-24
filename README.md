@@ -2,9 +2,9 @@
 
 Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud Platform (GCP)
 
-## Description des fichiers fournis :
+## Description des fichiers fournis
 
-```
+``` sh
 .
 ├── README.md
 ├── ansible
@@ -121,7 +121,7 @@ L'architecture comprend deux machines virtuelles (VM), une pour WordPress et une
 * outputs.tf : Il définit les sorties liées aux règles de pare-feu.
 * >variables.tf Ce fichier contient les déclarations de variables spécifiques aux règles de pare-feu == CONFIGURABLE
 
-* main.tf : Ce fichier principal de Terraform contient la configuration générale du projet, telle que la définition du fournisseur de cloud, et des modules deployés
+* main.tf : Ce fichier principal de Terraform contient la configuration générale du projet, telle que la définition du fournisseur de cloud, et des modules deployés.
 * outputs.tf : Ce fichier définit les sorties globales que vous souhaitez obtenir après le déploiement de l'ensemble de l'infrastructure.
 
 * service_account : Ce répertoire contient les fichiers liés à la configuration du compte de service.
@@ -140,16 +140,18 @@ L'architecture comprend deux machines virtuelles (VM), une pour WordPress et une
 
 * wordpress_vm : Ce répertoire contient les fichiers spécifiques à la création de la machine virtuelle pour WordPress, de manière similaire au répertoire "db_vm".
 
-## Composition et Configuration des scripts Bash :
+## Composition et Configuration des scripts Bash
 
 * creation-inventory.sh : Ce script génère un fichier d'inventaire Ansible dynamique à partir de l'infrastructure déployé par Terraform.
 
-* >> deploy.sh : Ce script est le SCRIPT principal pour déployer l'infrastructure. 
+* >> deploy.sh : Ce script est le SCRIPT principal pour déployer l'infrastructure.
 
 * terraform-destroy.sh : Ce script est  utilisé pour détruire l'infrastructure que vous avez créée à l'aide de Terraform.
 
 Une fois que vous avez effectué ces modifications des variables pour l'ensemble des dossiers, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer les sites WordPress sur GCP en utilisant la commande suivante :
 
+``` sh
     bash deploy.sh
+```
 
 ENJOY !
