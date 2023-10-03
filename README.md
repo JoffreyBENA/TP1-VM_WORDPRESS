@@ -141,11 +141,11 @@ L'architecture comprend deux machines virtuelles (VM), une pour ``WordPress`` et
 
 ## Composition et Configuration des scripts Bash
 
-- ``creation-inventory.sh`` : Ce script génère un fichier d'inventaire Ansible dynamique à partir de l'infrastructure déployé par Terraform.
+* ``creation-inventory.sh`` : Ce script génère un fichier d'inventaire Ansible dynamique à partir de l'infrastructure déployé par Terraform.
 
-- >> deploy.sh : Ce script est le SCRIPT principal pour déployer l'infrastructure.
+* >> deploy.sh : Ce script est le SCRIPT principal pour déployer l'infrastructure.
 
-- terraform-destroy.sh : Ce script est  utilisé pour détruire l'infrastructure que vous avez créée à l'aide de Terraform.
+* terraform-destroy.sh : Ce script est  utilisé pour détruire l'infrastructure que vous avez créée à l'aide de Terraform.
 
 ---
 
