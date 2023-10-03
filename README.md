@@ -103,48 +103,45 @@ L'architecture comprend deux machines virtuelles (VM), une pour ``WordPress`` et
 - ``playbook.yml`` : Le fichier "playbook.yml" est le playbook Ansible principal pour ce projet. Il contient une liste d'actions à exécuter sur les hôtes répertoriés dans l'inventaire. Toutes les tâches spécifiques que nous souhaitons automatiser sont définies dans ce playbook.
 
 - ``roles`` : Le répertoire "roles" contient les rôles Ansible qui définissent les actions à effectuer dans notre infrastructure. Nous avons deux rôles : "database" et "wordpress". Chaque rôle comprend des répertoires "handlers" pour les gestionnaires d'événements, "tasks" pour les tâches spécifiques, et parfois "templates" pour les fichiers de modèle.
-
     - **roles/database** : Ce rôle est chargé de la configuration de la base de données. Il comprend des tâches telles que l'installation et la configuration d'un serveur de base de données.
     - **roles/wordpress** : Ce rôle gère la configuration de l'application WordPress. Il inclut des tâches telles que le déploiement de fichiers WordPress et la configuration de l'application.
 
-::: details vars.ym : 
-Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. == CONFIGURABLE
-:::
+- ``vars.ym`` : Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. **== CONFIGURABLE**
 
 ## Composition et Configuration du dossier Terrafrom
 
-* db_vm : Ce répertoire contient les fichiers spécifiques à la création d'une machine virtuelle pour la base de données.
-* main.tf : Ce fichier définit la configuration principale pour la création de la machine virtuelle de la base de données, y compris les détails tels que le type de machine, l'image, et les paramètres réseau.
-* outputs.tf : Ce fichier définit les sorties (outputs) que vous souhaitez obtenir après la création de la machine virtuelle de la base de données.
-* >variables.tf : Ce fichier contient les déclarations de variables spécifiques à la création de la machine virtuelle de la base de données == CONFIGURABLE
+- ``db_vm`` : Ce répertoire contient les fichiers spécifiques à la création d'une machine virtuelle pour la base de données.
+    - **main.tf** : Ce fichier définit la configuration principale pour la création de la machine virtuelle de la base de données, y compris les détails tels que le type de machine, l'image, et les paramètres réseau.
+    - **outputs.tf** : Ce fichier définit les sorties (outputs) que vous souhaitez obtenir après la création de la machine virtuelle de la base de données.
+    - **variables.tf** : Ce fichier contient les déclarations de variables spécifiques à la création de la machine virtuelle de la base de données **== CONFIGURABLE**
 
-* firewall : Ce répertoire contient les fichiers pour la configuration des règles de pare-feu.
-* main.tf : Ce fichier définit la configuration des règles de pare-feu pour votre infrastructure.
-* outputs.tf : Il définit les sorties liées aux règles de pare-feu.
-* >variables.tf Ce fichier contient les déclarations de variables spécifiques aux règles de pare-feu == CONFIGURABLE
+- ``firewall`` : Ce répertoire contient les fichiers pour la configuration des règles de pare-feu.
+    - **main.tf** : Ce fichier définit la configuration des règles de pare-feu pour votre infrastructure.
+    - **outputs.tf** : Il définit les sorties liées aux règles de pare-feu.
+    - **variables.tf** Ce fichier contient les déclarations de variables spécifiques aux règles de pare-feu **== CONFIGURABLE**
 
-* main.tf : Ce fichier principal de Terraform contient la configuration générale du projet, telle que la définition du fournisseur de cloud, et des modules deployés.
-* outputs.tf : Ce fichier définit les sorties globales que vous souhaitez obtenir après le déploiement de l'ensemble de l'infrastructure.
+- ``main.tf`` : Ce fichier principal de Terraform contient la configuration générale du projet, telle que la définition du fournisseur de cloud, et des modules deployés.
+- ``outputs.tf`` : Ce fichier définit les sorties globales que vous souhaitez obtenir après le déploiement de l'ensemble de l'infrastructure.
 
-* service_account : Ce répertoire contient les fichiers liés à la configuration du compte de service.
-* main.tf : Il définit la configuration liée au compte de service, généralement utilisé pour gérer les autorisations dans l'infrastructure cloud.
-* outputs.tf : Ce fichier définit les sorties liées au compte de service.
-* >variables.tf : Vous pouvez personnaliser les variables liées au compte de service en fonction de vos besoins.
+- ``service_account`` : Ce répertoire contient les fichiers liés à la configuration du compte de service.
+    - **main.tf** : Il définit la configuration liée au compte de service, généralement utilisé pour gérer les autorisations dans l'infrastructure cloud.
+    - **outputs.tf** : Ce fichier définit les sorties liées au compte de service.
+    - **variables.tf** : Vous pouvez personnaliser les variables liées au compte de service en fonction de vos besoins.**== CONFIGURABLE**
 
-* terraform.tfstate et terraform.tfstate.backup : Ces fichiers stockent l'état actuel de votre infrastructure Terraform. Ne les modifiez pas manuellement, car Terraform les gère automatiquement.
+- **terraform.tfstate** et **terraform.tfstate.backup** : Ces fichiers stockent l'état actuel de votre infrastructure Terraform. Ne les modifiez pas manuellement, car Terraform les gère automatiquement.
 
-* >variables.tf : Ce fichier principal contient les déclarations de variables globales pour votre projet Terraform. Vous pouvez personnaliser ces variables en fonction de vos besoins spécifiques.
+- **variables.tf** : Ce fichier principal contient les déclarations de variables globales pour votre projet Terraform. Vous pouvez personnaliser ces variables en fonction de vos besoins spécifiques. **== CONFIGURABLE**
 
-* vpc : Ce répertoire contient les fichiers spécifiques à la création de votre réseau virtuel (VPC).
-* main.tf : Il définit la configuration pour la création du VPC, y compris les sous-réseaux et les règles de sécurité.
-* outputs.tf : Ce fichier définit les sorties liées au VPC.
-* >variables.tf : Vous pouvez personnaliser les variables relatives au VPC pour répondre aux exigences de votre projet.
+- ``vpc`` : Ce répertoire contient les fichiers spécifiques à la création de votre réseau virtuel (VPC).
+    - **main.tf** : Il définit la configuration pour la création du VPC, y compris les sous-réseaux et les règles de sécurité.
+    - **outputs.tf** : Ce fichier définit les sorties liées au VPC.
+    - **variables.tf** : Vous pouvez personnaliser les variables relatives au VPC pour répondre aux exigences de votre projet.
 
-* wordpress_vm : Ce répertoire contient les fichiers spécifiques à la création de la machine virtuelle pour WordPress, de manière similaire au répertoire "db_vm".
+- ``wordpress_vm`` : Ce répertoire contient les fichiers spécifiques à la création de la machine virtuelle pour WordPress, de manière similaire au répertoire "db_vm".
 
 ## Composition et Configuration des scripts Bash
 
-* creation-inventory.sh : Ce script génère un fichier d'inventaire Ansible dynamique à partir de l'infrastructure déployé par Terraform.
+- ``creation-inventory.sh`` : Ce script génère un fichier d'inventaire Ansible dynamique à partir de l'infrastructure déployé par Terraform.
 
 * >> deploy.sh : Ce script est le SCRIPT principal pour déployer l'infrastructure.
 
