@@ -147,6 +147,8 @@ L'architecture comprend deux machines virtuelles (VM), une pour ``WordPress`` et
 
 - terraform-destroy.sh : Ce script est  utilisé pour détruire l'infrastructure que vous avez créée à l'aide de Terraform.
 
+---
+
 ## Déploiement de l'infrastructure:
 
 Une fois que vous avez effectué ces modifications des variables pour l'ensemble des dossiers, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer les sites WordPress sur GCP en utilisant la commande suivante :
@@ -155,23 +157,11 @@ Une fois que vous avez effectué ces modifications des variables pour l'ensemble
     bash deploy.sh
 ```
 
-Le script "deploy.sh" exécute les commandes Terraform et Ansible pour déployer l'infrastructure et configurer les serveurs. Il effectue les opérations suivantes :
-
-## Destruction de l'infrastructure: 
-
-Pour détruire l'infrastructure que vous avez créée à l'aide de Terraform, exécutez le script ``terraform-destroy.sh`` en utilisant la commande suivante :
-
-``` sh
-    bash terraform-destroy.sh
-```
-
----
-
 ## Script bash deploy.sh pour déployer une infrastructure GCP et une application WordPress
 
 Le script bash `deploy.sh` est un script de déploiement automatisé pour déployer une infrastructure sur Google Cloud Platform (GCP) et déployer une application WordPress à l'aide de Terraform et Ansible.
 
-## Description étape par étape
+## Description étape par étape :
 
 ### Étape 1/8: Définition et Configuration du projet GCP
 
@@ -210,10 +200,14 @@ Le script bash `deploy.sh` est un script de déploiement automatisé pour déplo
 * Effectue une vérification du fonctionnement de l'application WordPress en utilisant `curl` pour accéder à l'adresse IP publique de la VM WordPress.
 * Affiche le résultat de la vérification, y compris le titre de la page WordPress.
 
-## Objectifs
+---
 
-Ce script automatisé vise à simplifier le processus de déploiement et de gestion d'une infrastructure GCP avec Terraform et le déploiement d'une application WordPress avec Ansible.
+## Destruction de l'infrastructure:
 
+Pour détruire l'infrastructure que vous avez créée à l'aide de Terraform, exécutez le script ``terraform-destroy.sh`` en utilisant la commande suivante :
 
+``` sh
+    bash terraform-destroy.sh
+```
 
 >> ENJOY !
