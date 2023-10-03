@@ -157,6 +157,16 @@ Une fois que vous avez effectué ces modifications des variables pour l'ensemble
 
 Le script "deploy.sh" exécute les commandes Terraform et Ansible pour déployer l'infrastructure et configurer les serveurs. Il effectue les opérations suivantes :
 
+## Destruction de l'infrastructure: 
+
+Pour détruire l'infrastructure que vous avez créée à l'aide de Terraform, exécutez le script ``terraform-destroy.sh`` en utilisant la commande suivante :
+
+``` sh
+    bash terraform-destroy.sh
+```
+
+---
+
 ## Script bash deploy.sh pour déployer une infrastructure GCP et une application WordPress
 
 Le script bash `deploy.sh` est un script de déploiement automatisé pour déployer une infrastructure sur Google Cloud Platform (GCP) et déployer une application WordPress à l'aide de Terraform et Ansible.
@@ -204,12 +214,6 @@ Le script bash `deploy.sh` est un script de déploiement automatisé pour déplo
 
 Ce script automatisé vise à simplifier le processus de déploiement et de gestion d'une infrastructure GCP avec Terraform et le déploiement d'une application WordPress avec Ansible.
 
-## Destruction de l'infrastructure: 
 
-Pour détruire l'infrastructure que vous avez créée à l'aide de Terraform, exécutez le script ``terraform-destroy.sh`` en utilisant la commande suivante :
-
-``` sh
-    bash terraform-destroy.sh
-```
 
 >> ENJOY !
