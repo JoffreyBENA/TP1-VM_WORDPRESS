@@ -62,16 +62,16 @@ Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud P
 └── tp_1_VM_WORDPRESS.pdf
 ```
 
-* **README.md** : Le fichier que vous lisez actuellement, qui contient la documentation du projet.
-* **ansible** : Le répertoire contenant les fichiers et les rôles Ansible pour le déploiement de votre application.
-* **creation-inventory.sh** : Un script pour générer un fichier d'inventaire Ansible à partir de votre infrastructure.
-* **credentials.json** : Fichier de configuration contenant des informations d'identification pour se connecter a votre compte GCP
-* **deploy.sh** : Un script pour déployer votre application en utilisant Terraform et Ansible.
-* 'deployment-schema** : Le répertoire contenant des schémas de déploiement.
-* **ssh_keys** : clés SSH pour l'infrastructure.
-* **terraform** : Le répertoire contenant les fichiers Terraform pour le déploiement de votre infrastructure.
-* **terraform-destroy.sh** : Un script pour détruire l'infrastructure créée avec Terraform.
-* **tp_1_VM_WORDPRESS.pdf** : Sujet du TP sous format PDF
+* `README.md` : Le fichier que vous lisez actuellement, qui contient la documentation du projet.
+* `ansible` : Le répertoire contenant les fichiers et les rôles Ansible pour le déploiement de votre application.
+* `creation-inventory.sh` : Un script pour générer un fichier d'inventaire Ansible à partir de votre infrastructure.
+* `credentials.json` : Fichier de configuration contenant des informations d'identification pour se connecter a votre compte GCP
+* `deploy.sh` : Un script pour déployer votre application en utilisant Terraform et Ansible.
+* `deployment-schema` : Le répertoire contenant des schémas de déploiement.
+* ``ssh_keys`` : clés SSH pour l'infrastructure.
+* ``terraform`` : Le répertoire contenant les fichiers Terraform pour le déploiement de votre infrastructure.
+* ``terraform-destroy.sh`` : Un script pour détruire l'infrastructure créée avec Terraform.
+* ``tp_1_VM_WORDPRESS.pdf`` : Sujet du TP sous format PDF
 
 ## Description des pré-requis
 
