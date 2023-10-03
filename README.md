@@ -143,9 +143,9 @@ L'architecture comprend deux machines virtuelles (VM), une pour ``WordPress`` et
 
 - ``creation-inventory.sh`` : Ce script génère un fichier d'inventaire Ansible dynamique à partir de l'infrastructure déployé par Terraform.
 
-* >> deploy.sh : Ce script est le SCRIPT principal pour déployer l'infrastructure.
+- >> deploy.sh : Ce script est le SCRIPT principal pour déployer l'infrastructure.
 
-* terraform-destroy.sh : Ce script est  utilisé pour détruire l'infrastructure que vous avez créée à l'aide de Terraform.
+- terraform-destroy.sh : Ce script est  utilisé pour détruire l'infrastructure que vous avez créée à l'aide de Terraform.
 
 Une fois que vous avez effectué ces modifications des variables pour l'ensemble des dossiers, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer les sites WordPress sur GCP en utilisant la commande suivante :
 
