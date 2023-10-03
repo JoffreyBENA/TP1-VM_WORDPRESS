@@ -62,7 +62,7 @@ Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud P
 └── tp_1_VM_WORDPRESS.pdf
 ```
 
-* 'README.md' : Le fichier que vous lisez actuellement, qui contient la documentation du projet.
+* "README.md" : Le fichier que vous lisez actuellement, qui contient la documentation du projet.
 * 'ansible' : Le répertoire contenant les fichiers et les rôles Ansible pour le déploiement de votre application.
 * 'creation-inventory.sh' : Un script pour générer un fichier d'inventaire Ansible à partir de votre infrastructure.
 * 'credentials.json' : Fichier de configuration contenant des informations d'identification pour se connecter a votre compte GCP
