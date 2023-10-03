@@ -107,7 +107,9 @@ L'architecture comprend deux machines virtuelles (VM), une pour ``WordPress`` et
     - **roles/database** : Ce rôle est chargé de la configuration de la base de données. Il comprend des tâches telles que l'installation et la configuration d'un serveur de base de données.
     - **roles/wordpress** : Ce rôle gère la configuration de l'application WordPress. Il inclut des tâches telles que le déploiement de fichiers WordPress et la configuration de l'application.
 
-::: details vars.ym : Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. == CONFIGURABLE
+::: details vars.ym : 
+Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. == CONFIGURABLE
+:::
 
 ## Composition et Configuration du dossier Terrafrom
 
