@@ -147,10 +147,69 @@ L'architecture comprend deux machines virtuelles (VM), une pour ``WordPress`` et
 
 - terraform-destroy.sh : Ce script est  utilisé pour détruire l'infrastructure que vous avez créée à l'aide de Terraform.
 
+## Déploiement de l'infrastructure:
+
 Une fois que vous avez effectué ces modifications des variables pour l'ensemble des dossiers, vous pouvez exécuter les scripts Terraform et Ansible pour déployer et configurer les sites WordPress sur GCP en utilisant la commande suivante :
 
 ``` sh
     bash deploy.sh
 ```
 
-ENJOY !
+Le script "deploy.sh" exécute les commandes Terraform et Ansible pour déployer l'infrastructure et configurer les serveurs. Il effectue les opérations suivantes :
+
+## Script bash deploy.sh pour déployer une infrastructure GCP et une application WordPress
+
+Le script bash `deploy.sh` est un script de déploiement automatisé pour déployer une infrastructure sur Google Cloud Platform (GCP) et déployer une application WordPress à l'aide de Terraform et Ansible.
+
+## Description étape par étape
+
+### Étape 1/8: Définition et Configuration du projet GCP
+
+* Définit la variable d'environnement `GCP_PROJECT` pour le projet GCP à utiliser.
+* Configure le projet GCP en utilisant la commande `gcloud config set project`.
+
+### Étape 2/8: Vérification de la présence de la clé ssh et Génération si nécessaire
+
+* Vérifie si le dossier `.ssh` existe dans le répertoire personnel de l'utilisateur et le crée s'il n'existe pas.
+* Vérifie si une clé SSH existe déjà dans le dossier `.ssh` et génère une nouvelle clé si elle n'existe pas.
+
+### Étape 3/8: Vérification de Terraform et Installation si nécessaire
+
+* Vérifie si Terraform est installé, et s'il ne l'est pas, installe Terraform en ajoutant le référentiel HashiCorp et en utilisant `apt` pour l'installation.
+
+### Étape 4/8: Initialisation de Terraform et Création des machines
+
+* Initialise Terraform s'il s'agit de la première exécution du script.
+* Utilise Terraform pour créer des machines virtuelles en utilisant le fichier de configuration Terraform.
+
+### Étape 5/8: Génération des inventaires dynamiques Ansible
+
+* Génère un fichier d'inventaire dynamique `inventory.ini` contenant les adresses IP externes des VM déployées par Terraform.
+* Met à jour le fichier `vars.yml` avec les adresses IP internes des VM déployées par Terraform.
+
+### Étape 6/8: Vérification de Ansible et Installation si nécessaire
+
+* Vérifie si Ansible est installé, et s'il ne l'est pas, installe Ansible en utilisant `apt`.
+
+### Étape 7/8: Déploiement avec Ansible
+
+* Déploie une application en utilisant Ansible à l'aide du fichier `playbook.yml` en utilisant l'inventaire `inventory.ini`.
+
+### Étape 8/8: Vérification du fonctionnement de l'application
+
+* Effectue une vérification du fonctionnement de l'application WordPress en utilisant `curl` pour accéder à l'adresse IP publique de la VM WordPress.
+* Affiche le résultat de la vérification, y compris le titre de la page WordPress.
+
+## Objectifs
+
+Ce script automatisé vise à simplifier le processus de déploiement et de gestion d'une infrastructure GCP avec Terraform et le déploiement d'une application WordPress avec Ansible.
+
+## Destruction de l'infrastructure: 
+
+Pour détruire l'infrastructure que vous avez créée à l'aide de Terraform, exécutez le script ``terraform-destroy.sh`` en utilisant la commande suivante :
+
+``` sh
+    bash terraform-destroy.sh
+```
+
+>> ENJOY !
