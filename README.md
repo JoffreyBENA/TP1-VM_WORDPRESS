@@ -77,11 +77,11 @@ Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud P
 
 Pour exécuter ce projet avec succès, vous devez vous assurer de disposer des éléments suivants :
 
-* Un ordinateur avec Ansible et Terraform installé.
-* Un compte GCP avec les autorisations appropriées pour créer des machines virtuelles (VM) et des réseaux VPC.
-* Une clé SSH nécessaire pour accéder à vos machines virtuelles déployées
-* Un fichier "credentials.json" que vous aurez télécharger depuis la console GCP et stockée a la racine de votre dossier
-* La configuration de Google Cloud SDK : Assurez-vous que vous avez configuré Google Cloud SDK avec vos informations d'identification GCP. Cela vous permettra d'interagir avec votre projet GCP via la ligne de commande.
+* Un ordinateur avec ``Ansible`` et ``Terraform`` installé.
+* Un ``compte GCP`` avec les autorisations appropriées pour créer des machines virtuelles (VM) et des réseaux VPC.
+* Une ``clé SSH`` publique nécessaire pour accéder à vos machines virtuelles déployées
+* Un fichier ``"credentials.json"`` que vous aurez télécharger depuis la console GCP et stockée a la racine de votre dossier
+* La ``configuration de Google Cloud SDK`` : Assurez-vous que vous avez configuré Google Cloud SDK avec vos informations d'identification GCP. Cela vous permettra d'interagir avec votre projet GCP via la ligne de commande.
 
 ## Schéma de présentation du déploiement
 
@@ -89,25 +89,25 @@ Voici le schéma permettant de visualiser le flux et l'inter-connection des diff
 
 ![Alt text](deployment-schema/deployment-wordpress-gcp.drawio.png)
 
-L'architecture comprend deux machines virtuelles (VM), une pour WordPress et une autre pour la base de données MySQL :
+L'architecture comprend deux machines virtuelles (VM), une pour ``WordPress`` et une autre pour la ``base de données MySQ``L`` :
 
-* La machine WordPress est accessible publiquement et contient PHP, Apache et l'application WordPress.
+* La machine ``WordPress`` est accessible publiquement et contient PHP, Apache et l'application WordPress.
 * La machine de base de données n'est pas accessible publiquement et contient MySQL avec un utilisateur spécifique pour WordPress.
 
 ## Composition et Configuration du dossier Ansible
 
-* ansible.cfg : Ce fichier contient la configuration globale d'Ansible pour le projet. Il inclus des paramètres tels que les chemins vers les fichiers d'inventaire, les rôles par défaut, et d'autres options de configuration spécifiques à Ansible.
+- ``ansible.cfg`` : Ce fichier contient la configuration globale d'Ansible pour le projet. Il inclus des paramètres tels que les chemins vers les fichiers d'inventaire, les rôles par défaut, et d'autres options de configuration spécifiques à Ansible.
 
-* inventory.ini : Le fichier "inventory.ini" est notre inventaire Ansible. Il répertorie les serveurs ou les hôtes que nous souhaitons gérer avec Ansible. Les adresses IP et  les noms d'hôte de nos machines virtuelles sont spécifiés dans ce fichier.
+- ``inventory.ini`` : Le fichier "inventory.ini" est notre inventaire Ansible. Il répertorie les serveurs ou les hôtes que nous souhaitons gérer avec Ansible. Les adresses IP et  les noms d'hôte de nos machines virtuelles sont spécifiés dans ce fichier.
 
-* playbook.yml : Le fichier "playbook.yml" est le playbook Ansible principal pour ce projet. Il contient une liste d'actions à exécuter sur les hôtes répertoriés dans l'inventaire. Toutes les tâches spécifiques que nous souhaitons automatiser sont définies dans ce playbook.
+- ``playbook.yml`` : Le fichier "playbook.yml" est le playbook Ansible principal pour ce projet. Il contient une liste d'actions à exécuter sur les hôtes répertoriés dans l'inventaire. Toutes les tâches spécifiques que nous souhaitons automatiser sont définies dans ce playbook.
 
-* roles : Le répertoire "roles" contient les rôles Ansible qui définissent les actions à effectuer dans notre infrastructure. Nous avons deux rôles : "database" et "wordpress". Chaque rôle comprend des répertoires "handlers" pour les gestionnaires d'événements, "tasks" pour les tâches spécifiques, et parfois "templates" pour les fichiers de modèle.
+- ``roles`` : Le répertoire "roles" contient les rôles Ansible qui définissent les actions à effectuer dans notre infrastructure. Nous avons deux rôles : "database" et "wordpress". Chaque rôle comprend des répertoires "handlers" pour les gestionnaires d'événements, "tasks" pour les tâches spécifiques, et parfois "templates" pour les fichiers de modèle.
 
-* roles/database : Ce rôle est chargé de la configuration de la base de données. Il comprend des tâches telles que l'installation et la configuration d'un serveur de base de données.
-* roles/wordpress : Ce rôle gère la configuration de l'application WordPress. Il inclut des tâches telles que le déploiement de fichiers WordPress et la configuration de l'application.
+    - **roles/database** : Ce rôle est chargé de la configuration de la base de données. Il comprend des tâches telles que l'installation et la configuration d'un serveur de base de données.
+    - **roles/wordpress** : Ce rôle gère la configuration de l'application WordPress. Il inclut des tâches telles que le déploiement de fichiers WordPress et la configuration de l'application.
 
-* >vars.ym : Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. == CONFIGURABLE
+::: details vars.ym : Le fichier "vars.yml" est un fichier de variables Ansible. Il contient des variables globales et spécifiques au rôle qui peuvent être utilisées dans les playbooks et les tâches Ansible. == CONFIGURABLE
 
 ## Composition et Configuration du dossier Terrafrom
 
