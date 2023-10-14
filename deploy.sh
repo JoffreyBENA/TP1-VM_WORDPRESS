@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\033[1;32;4m-- Etape 1/8: Déinition et Configuration du projet GCP --\033[0m"
+echo -e "\033[1;32;4m-- Etape 1/8: Définition et Configuration du projet GCP --\033[0m"
 
 # Définition du projet GCP
 export GCP_PROJECT="pure-anthem-393513"  # Remplacez par le nom de votre projet
@@ -75,7 +75,7 @@ fi
 
 # --------------------------------------------------------------------
 
-echo -e "\033[1;32;4m-- Etape 3/8: Initialisation de Terrafrom et Vréation des machines --\033[0m"
+echo -e "\033[1;32;4m-- Etape 3/8: Initialisation de Terrafrom et Création des machines --\033[0m"
 
 # Initialisation de Terraform si c'est la première exécution
 if [ ! -d ".terraform" ]; then
