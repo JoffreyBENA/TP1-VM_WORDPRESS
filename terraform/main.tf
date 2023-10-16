@@ -33,6 +33,7 @@ module "service_account" {
     display_name    = var.display_name
 }
 
+# VM
 module "wordpress_vm" {
     depends_on              = [ module.vpc ]
     source                  = "./wordpress_vm"

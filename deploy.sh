@@ -65,7 +65,7 @@ else
 fi
 
 # Vérification de la présence des fichiers Terraform
-if [ ! -f "terraform/vpc/variables.tf" ] || [ ! -f "terraform/vpc/main.tf" ] || [ ! -f "terraform/wordpress_vm/variables.tf" ] || [ ! -f "terraform/wordpress_vm/main.tf" ] || [ ! -f "terraform/db_vm/variables.tf" ] || [ ! -f "terraform/db_vm/main.tf" ] || [ ! -f "terraform/firewall/variables.tf" ] || [ ! -f "terraform/firewall/main.tf" ]; then
+if [ ! -d "terraform" ] || [ ! -f "terraform/variables.tf" ] || [ ! -f "terraform/main.tf" ] || [ ! -f "terraform/vpc/variables.tf" ] || [ ! -f "terraform/vpc/main.tf" ] || [ ! -f "terraform/service_account/variables.tf" ] || [ ! -f "terraform/service_account/main.tf" ] || [ ! -f "terraform/wordpress_vm/variables.tf" ] || [ ! -f "terraform/wordpress_vm/main.tf" ] || [ ! -f "terraform/db_vm/variables.tf" ] || [ ! -f "terraform/db_vm/main.tf" ] || [ ! -f "terraform/firewall/variables.tf" ] || [ ! -f "terraform/firewall/main.tf" ]; then
     echo -e "\033[33mCertains fichiers Terraform sont manquants. Clonage du référentiel...\033[0m"
     git clone https://github.com/JoffreyBENA/TP1-VM_WORDPRESS.git
     cd TP1-VM_WORDPRESS/terraform
@@ -91,14 +91,14 @@ cd ..
 # --------------------------------------------------------------------
 echo -e "\033[1;32;4m-- Etape 4/8: Génération des inventaires dynamiques Ansible  --\033[0m"
 
-# Génération de l'inventaire dynamique dans le fichiers inventori.ini avec les adresses IP externes des VMs déployées par Terraform :
+# Génération de l'inventaire dynamique dans le fichiers inventori.ini avec les adresses IP internes des VMs déployées par Terraform :
 echo -e "\033[33mCréation du fichier 'inventory.ini'...\033[0m"
 cd ./ansible
 rm -f inventory.ini
 cd ..
 ./creation-inventory.sh >ansible/inventory.ini
 
-# # Génération de l'inventaire dynamique dans le fichiers vars.yml avec les adresse IP internet des Vms déployées par Terraform :
+# # Génération de l'inventaire dynamique dans le fichiers vars.yml avec les adresse IP internes des Vms déployées par Terraform :
 
 # # Remplacement des adresses IP dans le fichier vars.yml
 cd ./terraform
