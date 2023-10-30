@@ -1,7 +1,7 @@
 variable "project_id" {
     type        = string
     description = "ID du projet GCP"
-    default     = "pure-anthem-393513"
+    default     = "exalted-airfoil-402614"
 }
 
 variable "region" {
@@ -35,7 +35,7 @@ variable "firewall_source" {
 
 variable "account_id" {
     description = "ID du compte de service."
-    default     = "pure-anthem-393513"
+    default     = "exalted-airfoil-402614"
 }
 
 variable "display_name" {
