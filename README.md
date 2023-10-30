@@ -5,7 +5,7 @@ Documentation du Déploiement Automatisé d'un site WordPress sur Google Cloud P
 ## Description des fichiers fournis
 
 ``` sh
-.
+. # Arborescence du repository
 ├── README.md
 ├── ansible
 │   ├── ansible.cfg
