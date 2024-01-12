@@ -211,5 +211,3 @@ Pour détruire l'infrastructure que vous avez créée à l'aide de Terraform, ex
 ```
 
 >> ENJOY !
-
-test
